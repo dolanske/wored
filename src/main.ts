@@ -8,8 +8,9 @@ export const cfg = {
   WORD_LENGTH: 5,
   AVAILABLE_ATTEMPTS: 6,
   COLORS: {
-    RED: '#f47068',
+    // RED: '#f47068',
     GREEN: '#57ab5a',
+    ORANGE: '#e0823d',
     GRAY: '#aeaeae',
   },
 }
@@ -75,6 +76,7 @@ async function main() {
   const controller = document.createElement(EL_CONTROLLER)
   const app = document.getElementById('app')
 
+  // Is called whenever a valid user input has been submitted
   controller.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
     const { input } = (event as CustomEvent<{ input: string }>).detail
 
@@ -102,14 +104,19 @@ async function main() {
     }
 
     // SECTION: LOGGING
-    console.log('Round result')
+    console.log('Round results')
     console.table(round.letters)
 
     // Save round
     game.rounds.push(round)
+    controller.endOfRound(round)
 
     // Check wether game has been completed (eg. won) We are checking if
     // at least ONE game round has every single letter in the exact match
+    checkAndHandleGameOver()
+  })
+
+  function checkAndHandleGameOver() {
     const isGameCompleted = game.rounds.some(round => round.letters.every(letter => letter.isExactMatch))
 
     // SECTION: Game has been won
@@ -123,7 +130,7 @@ async function main() {
     // SECTION: Game over stuff
     if (!isGameCompleted && cfg.AVAILABLE_ATTEMPTS === game.rounds.length)
       console.log(`[${word}] Game over! You lost`)
-  })
+  }
 
   if (app)
     app.appendChild(controller)

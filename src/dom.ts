@@ -4,6 +4,10 @@ import { cfg } from './main'
 import { replaceAt } from './util'
 import { isValidEnglishWord, isValidInput } from './validate'
 import { EL_CONTROLLER, EL_ROW, EL_STATUS_BAR, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from './shared'
+import type { Letter } from './types'
+
+// TODO Move element definitions into variables with a correct interface
+// Register elements at the end of file
 
 // This is the element for each input row. Its functionality is to
 // collect and validate user inputs and send them to the parent
@@ -13,7 +17,7 @@ customElements.define(
   class extends HTMLFormElement {
     input: string
     isActive: boolean
-    inputs: HTMLInputElement[] = []
+    cells: HTMLInputElement[] = []
     #isValidating: boolean
 
     constructor() {
@@ -51,31 +55,32 @@ customElements.define(
 
       // Generate each input cell
       for (let i = 0; i < cfg.WORD_LENGTH; i++) {
-        const input = document.createElement('input')
-        input.setAttribute('type', 'text')
-        this.inputs.push(input)
+        const cell = document.createElement('input')
+        cell.setAttribute('type', 'text')
+        this.cells.push(cell)
       }
 
       // Append everything to the element root
-      this.shadowRoot?.append(...this.inputs)
+      this.shadowRoot?.append(...this.cells)
     }
 
-    // Enables
+    // TODO This should probably be handled in the controller
     enable() {
-      for (let i = 0; i < this.inputs.length; i++) {
-        const input = this.inputs[i]
+      for (let i = 0; i < this.cells.length; i++) {
+        const cell = this.cells[i]
 
-        input.removeEventListener('input', (e) => {
-          this.__cellInputHandler(e, i, input)
+        cell.removeEventListener('input', (e) => {
+          this.__cellInputHandler(e, i, cell)
         })
       }
     }
 
+    // TODO: same as above
     disable() {
-      for (let i = 0; i < this.inputs.length; i++) {
-        const input = this.inputs[i]
-        input.removeEventListener('input', (e) => {
-          this.__cellInputHandler(e, i, input)
+      for (let i = 0; i < this.cells.length; i++) {
+        const cell = this.cells[i]
+        cell.removeEventListener('input', (e) => {
+          this.__cellInputHandler(e, i, cell)
         })
       }
     }
@@ -111,7 +116,7 @@ customElements.define(
       // Generate row items
       for (let i = 0; i < cfg.AVAILABLE_ATTEMPTS; i++) {
         if (this.shadowRoot) {
-          const el = document.createElement('row-form') as HTMLFormElement
+          const el = document.createElement(EL_ROW) as HTMLFormElement
           this.rows.push(el)
           this.shadowRoot?.appendChild(el)
         }
@@ -124,10 +129,17 @@ customElements.define(
       for (let i = 0; i < this.rows.length; i++) {
         const row = this.rows[0]
 
-        if (i === this.activeRowIndex)
+        if (i === this.activeRowIndex) {
+          // REVIEW
+          // In the ideal word, any methods defiend on custom elements should be present in their DOM object
+          // Check that out when I am working on the FE
+          row.enable()
           row.addEventListener(EVT_ROW_SUBMIT, this.__rowSubmitHandler)
-        else
+        }
+        else {
+          row.disable()
           row.removeEventListener(EVT_ROW_SUBMIT, this.__rowSubmitHandler)
+        }
       }
     }
 
@@ -146,9 +158,25 @@ customElements.define(
       this.dispatchEvent(emit)
     }
 
-    clearRows() {
-      if (this.shadowRoot)
-        this.shadowRoot.innerHTML = ''
+    endOfRound(roundResult: Letter[]) {
+      const currentIndex = this.activeRowIndex
+      this.activeRowIndex++
+      this.updateListeners()
+
+      const cells = this.rows[currentIndex].children
+
+      for (let i = 0; i < cells.length; i++) {
+        const cell = cells[i]
+        const result = roundResult[i]
+
+        const color = result.isPresent
+          ? result.isExactMatch
+            ? cfg.COLORS.GREEN
+            : cfg.COLORS.ORANGE
+          : cfg.COLORS.GRAY
+
+        cell.setInputStatusAtIndex(i, color)
+      }
     }
   },
 )
