@@ -5,6 +5,9 @@ import { replaceAt } from './util'
 import { isValidEnglishWord, isValidInput } from './validate'
 import { COMPONENT_ROW_SUBMIT_ID, GAME_ROW_SUBMIT_ID } from './shared'
 
+// This is the element for each input row. Its functionality is to
+// collect and validate user inputs and send them to the parent
+// form controller
 customElements.define(
   'row-form',
   class extends HTMLFormElement {
@@ -91,8 +94,8 @@ customElements.define(
 )
 
 // The main element which handles all the logic for
-// 1. Generating the inputs
-//
+// 1. Generating rows
+// 2. Listening to row events and forwarding them to the game's core
 customElements.define(
   'form-controller',
   class extends HTMLDivElement {
@@ -145,4 +148,12 @@ customElements.define(
         this.shadowRoot.innerHTML = ''
     }
   },
+)
+
+// TODO
+// Status bar. Receives events from both the controller and input rows.
+// Meant to display error / info messages to the users
+customElements.define(
+  'status-bar',
+  class extends HTMLDivElement { },
 )
