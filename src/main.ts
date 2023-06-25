@@ -1,6 +1,7 @@
 import type { Game, Round } from './types'
 import { isSameDay } from './util'
 import './style/index.css'
+import { EL_CONTROLLER, EVT_ROW_SUBMIT_TO_CORE } from './shared'
 
 // Main configuration
 export const cfg = {
@@ -65,17 +66,16 @@ async function main() {
   const word = await fetchWord()
 
   // SECTION: LOGGING
-  console.log(`${word} ----------`)
+  console.log(`---------- New Game: "${word}" ----------`)
 
   game.running = true
   game.word = word
   game.timestamps.from = Date.now()
 
-  const controller = document.createElement('form-controller')
+  const controller = document.createElement(EL_CONTROLLER)
   const app = document.getElementById('app')
 
-  controller.addEventListener('game-over', () => { })
-  controller.addEventListener('round-over', (event) => {
+  controller.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
     const { input } = (event as CustomEvent<{ input: string }>).detail
 
     const round: Round = {
@@ -102,6 +102,7 @@ async function main() {
     }
 
     // SECTION: LOGGING
+    console.log('Round result')
     console.table(round.letters)
 
     // Save round
@@ -116,12 +117,12 @@ async function main() {
       game.win = true
       game.running = false
       game.timestamps.to = Date.now()
-      console.log('GAME IS OVER: WON!!!!!!!')
+      console.log(`[${word}] Game over! You won!`)
     }
 
     // SECTION: Game over stuff
     if (!isGameCompleted && cfg.AVAILABLE_ATTEMPTS === game.rounds.length)
-      console.log('GAME IS OVER: LOST')
+      console.log(`[${word}] Game over! You lost`)
   })
 
   if (app)

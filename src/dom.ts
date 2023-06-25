@@ -3,13 +3,13 @@
 import { cfg } from './main'
 import { replaceAt } from './util'
 import { isValidEnglishWord, isValidInput } from './validate'
-import { COMPONENT_ROW_SUBMIT_ID, GAME_ROW_SUBMIT_ID } from './shared'
+import { EL_CONTROLLER, EL_ROW, EL_STATUS_BAR, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from './shared'
 
 // This is the element for each input row. Its functionality is to
 // collect and validate user inputs and send them to the parent
 // form controller
 customElements.define(
-  'row-form',
+  EL_ROW,
   class extends HTMLFormElement {
     input: string
     isActive: boolean
@@ -40,7 +40,7 @@ customElements.define(
         }
         else {
           // Input is ok and is being emitted to the parent component
-          const emit = new CustomEvent(COMPONENT_ROW_SUBMIT_ID, {
+          const emit = new CustomEvent(EVT_ROW_SUBMIT, {
             bubbles: false,
             detail: { input: this.input },
           })
@@ -97,7 +97,7 @@ customElements.define(
 // 1. Generating rows
 // 2. Listening to row events and forwarding them to the game's core
 customElements.define(
-  'form-controller',
+  EL_CONTROLLER,
   class extends HTMLDivElement {
     activeRowIndex: number
     rows: HTMLFormElement[]
@@ -125,9 +125,9 @@ customElements.define(
         const row = this.rows[0]
 
         if (i === this.activeRowIndex)
-          row.addEventListener(COMPONENT_ROW_SUBMIT_ID, this.__rowSubmitHandler)
+          row.addEventListener(EVT_ROW_SUBMIT, this.__rowSubmitHandler)
         else
-          row.removeEventListener(COMPONENT_ROW_SUBMIT_ID, this.__rowSubmitHandler)
+          row.removeEventListener(EVT_ROW_SUBMIT, this.__rowSubmitHandler)
       }
     }
 
@@ -135,7 +135,10 @@ customElements.define(
       // Received a valid input
       const { input } = (event as CustomEvent<{ input: string }>).detail
 
-      const emit = new CustomEvent(GAME_ROW_SUBMIT_ID, {
+      // Note This event could probably go straight from `row > core`
+      // instead of `row > controller > core`, but I wanted some wiggle
+      // room for extra validation/loggin if needed later
+      const emit = new CustomEvent(EVT_ROW_SUBMIT_TO_CORE, {
         bubbles: false,
         detail: { input },
       })
@@ -154,6 +157,6 @@ customElements.define(
 // Status bar. Receives events from both the controller and input rows.
 // Meant to display error / info messages to the users
 customElements.define(
-  'status-bar',
+  EL_STATUS_BAR,
   class extends HTMLDivElement { },
 )
