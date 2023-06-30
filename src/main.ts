@@ -1,7 +1,11 @@
 import type { Game, Round } from './types'
 import { isSameDay } from './util'
 import './style/index.css'
-import { EL_CONTROLLER, EVT_ROW_SUBMIT_TO_CORE } from './shared'
+import { EL_CONTROLLER, EL_ROW, EVT_ROW_SUBMIT_TO_CORE } from './shared'
+import { ElController, ElRow } from './dom'
+
+customElements.define(EL_ROW, ElRow)
+customElements.define(EL_CONTROLLER, ElController)
 
 // Main configuration
 export const cfg = {
@@ -73,8 +77,11 @@ async function main() {
   game.word = word
   game.timestamps.from = Date.now()
 
-  const controller = document.createElement(EL_CONTROLLER)
+  // const contElController
+  const controller = new ElController()
   const app = document.getElementById('app')
+
+  app?.appendChild(controller)
 
   // Is called whenever a valid user input has been submitted
   controller.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
@@ -109,7 +116,7 @@ async function main() {
 
     // Save round
     game.rounds.push(round)
-    controller.endOfRound(round)
+    controller.endOfRound(round.letters)
 
     // Check wether game has been completed (eg. won) We are checking if
     // at least ONE game round has every single letter in the exact match
@@ -131,9 +138,6 @@ async function main() {
     if (!isGameCompleted && cfg.AVAILABLE_ATTEMPTS === game.rounds.length)
       console.log(`[${word}] Game over! You lost`)
   }
-
-  if (app)
-    app.appendChild(controller)
 }
 
 // Run the game
