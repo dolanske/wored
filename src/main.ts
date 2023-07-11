@@ -68,11 +68,8 @@ async function fetchWord(): Promise<string> {
     })
 }
 
-async function main() {
-  // await Promise.all([
-  //   customElements.whenDefined(EL_CONTROLLER),
-  //   customElements.whenDefined(EL_ROW),
-  // ])
+export async function run(mountTo: string) {
+  console.clear()
 
   // Fetch the word
   const word = await fetchWord()
@@ -86,7 +83,7 @@ async function main() {
 
   const controller = new ElController()
   // const controller = document.createElement(EL_CONTROLLER)
-  const app = document.getElementById('app')
+  const app = document.querySelector(mountTo)
   app?.appendChild(controller)
 
   // Is called whenever a valid user input has been submitted
@@ -147,4 +144,4 @@ async function main() {
 }
 
 // Run the game
-main()
+run('#app')

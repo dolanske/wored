@@ -18,7 +18,20 @@ export class ElRow extends HTMLFormElement {
 
   constructor() {
     super()
-    // this.attachShadow({ mode: 'open' })
+
+    // Generate each input cell
+    for (let i = 0; i < cfg.WORD_LENGTH; i++) {
+      const cell = document.createElement('input')
+      cell.setAttribute('type', 'text')
+      this.cells.push(cell)
+    }
+
+    // Append everything to the element root
+    this.append(...this.cells)
+    this.disable()
+  }
+
+  onConnectedCallback() {
     this.addEventListener('submit', async () => {
       // Abort if validation is in progress
       if (this.#isValidating)
@@ -44,33 +57,22 @@ export class ElRow extends HTMLFormElement {
         this.dispatchEvent(emit)
       }
     })
-
-    // Generate each input cell
-    for (let i = 0; i < cfg.WORD_LENGTH; i++) {
-      const cell = document.createElement('input')
-      cell.setAttribute('type', 'text')
-      this.cells.push(cell)
-    }
-
-    // Append everything to the element root
-    this.append(...this.cells)
   }
 
-  // TODO This should probably be handled in the controller
   enable() {
     for (let i = 0; i < this.cells.length; i++) {
       const cell = this.cells[i]
-
+      cell.style.removeProperty('pointer-events')
       cell.removeEventListener('input', (e) => {
         this.__cellInputHandler(e, i, cell)
       })
     }
   }
 
-  // TODO: same as above
   disable() {
     for (let i = 0; i < this.cells.length; i++) {
       const cell = this.cells[i]
+      cell.style.pointerEvents = 'none'
       cell.removeEventListener('input', (e) => {
         this.__cellInputHandler(e, i, cell)
       })
@@ -115,6 +117,8 @@ export class ElController extends HTMLElement {
   updateListeners() {
     for (let i = 0; i < this.rows.length; i++) {
       const row = this.rows[0]
+
+      console.log(i, this.activeRowIndex)
 
       if (i === this.activeRowIndex) {
         // REVIEW
