@@ -6,9 +6,6 @@ import { isValidEnglishWord, isValidInput } from './validate'
 import { EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from './shared'
 import type { Letter } from './types'
 
-// TODO Move element definitions into variables with a correct interface
-// Register elements at the end of file
-
 // This is the element for each input row. Its functionality is to
 // collect and validate user inputs and send them to the parent
 // form controller
@@ -21,7 +18,7 @@ export class ElRow extends HTMLFormElement {
 
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' })
+    // this.attachShadow({ mode: 'open' })
     this.addEventListener('submit', async () => {
       // Abort if validation is in progress
       if (this.#isValidating)
@@ -56,7 +53,7 @@ export class ElRow extends HTMLFormElement {
     }
 
     // Append everything to the element root
-    this.shadowRoot?.append(...this.cells)
+    this.append(...this.cells)
   }
 
   // TODO This should probably be handled in the controller
@@ -103,21 +100,14 @@ export class ElController extends HTMLElement {
   constructor() {
     super()
     this.activeRowIndex = 0
-    this.attachShadow({ mode: 'open' })
+    // this.attachShadow({ mode: 'open' })
     this.rows = []
 
-    console.log('here')
-
     // Generate row items
-    for (let i = 0; i > cfg.AVAILABLE_ATTEMPTS; i++) {
-      console.log(i)
-
-      if (this.shadowRoot) {
-        const el = new ElRow()
-        this.rows.push(el)
-
-        this.shadowRoot?.appendChild(el)
-      }
+    for (let i = 0; i < cfg.AVAILABLE_ATTEMPTS; i++) {
+      const el = new ElRow()
+      this.rows.push(el)
+      this.appendChild(el)
     }
 
     this.updateListeners()
