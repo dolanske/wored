@@ -10,7 +10,7 @@ customElements.define(EL_CONTROLLER, ElController)
 // Main configuration
 export const cfg = {
   WORD_LENGTH: 5,
-  AVAILABLE_ATTEMPTS: 6,
+  AVAILABLE_ATTEMPTS: 3,
   COLORS: {
     // RED: '#f47068',
     GREEN: '#57ab5a',
@@ -42,11 +42,12 @@ async function fetchWord(): Promise<string> {
     const cached = JSON.parse(cachedRaw) as {
       timestamp: number
       word: string
+      length: number
     }
     const timestampNow = new Date()
     const timestampCached = new Date(cached.timestamp)
 
-    if (isSameDay(timestampNow, timestampCached))
+    if (isSameDay(timestampNow, timestampCached) && cached.length === cfg.WORD_LENGTH)
       return Promise.resolve(cached.word)
   }
 
@@ -57,6 +58,7 @@ async function fetchWord(): Promise<string> {
       localStorage.setItem('word', JSON.stringify({
         word,
         timestamp: Date.now(),
+        length: cfg.WORD_LENGTH,
       }))
 
       return word

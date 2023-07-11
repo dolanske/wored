@@ -100,7 +100,6 @@ export class ElController extends HTMLElement {
   constructor() {
     super()
     this.activeRowIndex = 0
-    // this.attachShadow({ mode: 'open' })
     this.rows = []
 
     // Generate row items
