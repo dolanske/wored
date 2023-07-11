@@ -88,7 +88,7 @@ export class ElRow extends HTMLFormElement {
   }
 
   setInputStatusAtIndex(index: number, color: keyof typeof cfg.COLORS) {
-    this.inputs[index].style.backgroundColor = color
+    this.cells[index].style.backgroundColor = color
   }
 }
 
@@ -96,7 +96,7 @@ export class ElRow extends HTMLFormElement {
 // 1. Generating rows
 // 2. Listening to row events and forwarding them to the game's core
 
-export class ElController extends HTMLDivElement {
+export class ElController extends HTMLElement {
   activeRowIndex: number
   rows: ElRow[]
 
@@ -161,9 +161,9 @@ export class ElController extends HTMLDivElement {
     this.activeRowIndex++
     this.updateListeners()
 
-    const cells = this.rows[currentIndex]
+    const row = this.rows[currentIndex]
 
-    for (let i = 0; i < cells.length; i++) {
+    for (let i = 0; i < row.cells.length; i++) {
       const result = roundResult[i]
       const color = (result.isPresent
         ? result.isExactMatch
@@ -171,7 +171,7 @@ export class ElController extends HTMLDivElement {
           : cfg.COLORS.ORANGE
         : cfg.COLORS.GRAY) as keyof typeof cfg.COLORS
 
-      cells.setInputStatusAtIndex(i, color)
+      row.setInputStatusAtIndex(i, color)
     }
   }
 }

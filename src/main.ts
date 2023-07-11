@@ -4,7 +4,7 @@ import './style/index.css'
 import { EL_CONTROLLER, EL_ROW, EVT_ROW_SUBMIT_TO_CORE } from './shared'
 import { ElController, ElRow } from './dom'
 
-customElements.define(EL_ROW, ElRow)
+customElements.define(EL_ROW, ElRow, { extends: 'form' })
 customElements.define(EL_CONTROLLER, ElController)
 
 // Main configuration
@@ -67,6 +67,11 @@ async function fetchWord(): Promise<string> {
 }
 
 async function main() {
+  // await Promise.all([
+  //   customElements.whenDefined(EL_CONTROLLER),
+  //   customElements.whenDefined(EL_ROW),
+  // ])
+
   // Fetch the word
   const word = await fetchWord()
 
@@ -77,10 +82,9 @@ async function main() {
   game.word = word
   game.timestamps.from = Date.now()
 
-  // const contElController
   const controller = new ElController()
+  // const controller = document.createElement(EL_CONTROLLER)
   const app = document.getElementById('app')
-
   app?.appendChild(controller)
 
   // Is called whenever a valid user input has been submitted
