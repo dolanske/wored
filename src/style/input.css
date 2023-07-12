@@ -1,0 +1,25 @@
+input {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  outline: none;
+  text-align: center;
+  font-size: 1.6rem;
+  border: none;
+  background-color: #313131;
+}
+
+input:disabled {
+  background-color: #1a1a1a;
+}
+
+form-controller {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+form {
+  display: flex;
+  gap: 8px;
+}

@@ -1,16 +1,15 @@
 import type { Game, Round } from './types'
 import { isSameDay } from './util'
 import './style/index.css'
-import { EL_CONTROLLER, EL_ROW, EVT_ROW_SUBMIT_TO_CORE } from './shared'
-import { ElController, ElRow } from './dom'
-
-customElements.define(EL_ROW, ElRow, { extends: 'form' })
-customElements.define(EL_CONTROLLER, ElController)
+import { EVT_ROW_SUBMIT_TO_CORE } from './shared'
+import { ElController } from './elements/controller'
+import { register } from './dom'
+import { ElKeyboard } from './elements/Keyboard'
 
 // Main configuration
 export const cfg = {
   WORD_LENGTH: 5,
-  AVAILABLE_ATTEMPTS: 3,
+  AVAILABLE_ATTEMPTS: 6,
   COLORS: {
     // RED: '#f47068',
     GREEN: '#57ab5a',
@@ -81,13 +80,14 @@ export async function run(mountTo: string) {
   game.word = word
   game.timestamps.from = Date.now()
 
-  const controller = new ElController()
+  const Controller = new ElController()
+  const Keyboard = new ElKeyboard()
   // const controller = document.createElement(EL_CONTROLLER)
-  const app = document.querySelector(mountTo)
-  app?.appendChild(controller)
+  const App = document.querySelector(mountTo)
+  App?.append(Controller, Keyboard)
 
   // Is called whenever a valid user input has been submitted
-  controller.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
+  Controller.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
     const { input } = (event as CustomEvent<{ input: string }>).detail
 
     const round: Round = {
@@ -119,7 +119,7 @@ export async function run(mountTo: string) {
 
     // Save round
     game.rounds.push(round)
-    controller.endOfRound(round.letters)
+    Controller.endOfRound(round.letters)
 
     // Check wether game has been completed (eg. won) We are checking if
     // at least ONE game round has every single letter in the exact match
@@ -142,6 +142,9 @@ export async function run(mountTo: string) {
       console.log(`[${word}] Game over! You lost`)
   }
 }
+
+// Registers UI components
+register()
 
 // Run the game
 run('#app')

@@ -1,0 +1,12 @@
+keyboard-controller {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 588px;
+}
+
+keyboard-controller button {
+  /* width: 48px; */
+  height: 64px;
+}
