@@ -129,6 +129,8 @@ export async function run(mountTo: string) {
       game.win = true
       game.running = false
       game.timestamps.to = Date.now()
+      Keyboard.disable()
+
       console.log(`[${word}] Game over! You won!`)
     }
 

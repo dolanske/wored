@@ -1,9 +1,8 @@
-// $ is 'Enter' key
-
 import { CLS_COLORS, EVT_BACKSPACE, EVT_ENTER, EVT_LETTER } from '../shared'
 import type { Letter } from '../types'
 
 // # is 'Backspace' key
+// $ is 'Enter' key
 const buttonString = 'qwertyuiopasdfghjkl$zxcvbnm#'
 
 export class ElKeyboard extends HTMLElement {
@@ -34,6 +33,8 @@ export class ElKeyboard extends HTMLElement {
 
       return el
     })
+
+    document.addEventListener('keydown', e => this.__keyPressHandler(e))
   }
 
   connectedCallback() {
@@ -52,6 +53,18 @@ export class ElKeyboard extends HTMLElement {
       const index = buttonString.indexOf(result.letterUser)
       this.buttons[index].classList.add(color)
     }
+  }
+
+  // Will disable any interaction after game has concluded
+  disable() {
+    for (const btn of this.buttons) {
+      btn.removeEventListener('click', this.__enterHandler)
+      btn.removeEventListener('click', this.__backspaceHandler)
+      btn.removeEventListener('click', () => this.__letterHandler(''))
+      btn.setAttribute('disabled', 'true')
+    }
+
+    document.removeEventListener('keydown', e => this.__keyPressHandler(e))
   }
 
   // Send the character into the row element
@@ -74,5 +87,16 @@ export class ElKeyboard extends HTMLElement {
   __backspaceHandler() {
     const emit = new CustomEvent(EVT_BACKSPACE, { bubbles: false })
     window.dispatchEvent(emit)
+  }
+
+  // Allows users to type on their keyboard
+  __keyPressHandler(event: KeyboardEvent) {
+    const { key } = event
+    if (buttonString.includes(key))
+      this.__letterHandler(key)
+    else if (key === 'Backspace')
+      this.__backspaceHandler()
+    else if (key === 'Enter')
+      this.__enterHandler()
   }
 }

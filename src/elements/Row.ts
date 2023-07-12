@@ -67,6 +67,8 @@ export class ElRow extends HTMLElement {
       event.preventDefault()
       console.log('Submitted Row')
 
+      console.log(this.#isValidating)
+
       // Abort if validation is in progress
       if (this.#isValidating)
         return
@@ -90,6 +92,8 @@ export class ElRow extends HTMLElement {
 
         this.dispatchEvent(emit)
       }
+
+      this.#isValidating = false
     })
   }
 

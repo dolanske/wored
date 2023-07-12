@@ -33,8 +33,8 @@ export class ElController extends HTMLElement {
       const row = this.rows[i]
 
       if (i === this.activeRowIndex) {
-        row.isActive = true
         row.addEventListener(EVT_ROW_SUBMIT, this.__rowSubmitHandler)
+        row.isActive = true
       }
       else {
         row.isActive = false
@@ -46,6 +46,8 @@ export class ElController extends HTMLElement {
   __rowSubmitHandler(event: Event) {
     // Received a valid input
     const { input } = (event as CustomEvent<{ input: string }>).detail
+
+    console.log(input)
 
     // Note This event could probably go straight from `row > core`
     // instead of `row > controller > core`, but I wanted some wiggle
@@ -62,7 +64,6 @@ export class ElController extends HTMLElement {
   endOfRound(roundResult: Letter[]) {
     const currentIndex = this.activeRowIndex
     this.activeRowIndex++
-    this.updateListeners()
 
     const row = this.rows[currentIndex]
 
@@ -76,5 +77,7 @@ export class ElController extends HTMLElement {
 
       row.setInputStatusAtIndex(i, color)
     }
+
+    this.updateListeners()
   }
 }
