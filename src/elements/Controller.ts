@@ -47,8 +47,6 @@ export class ElController extends HTMLElement {
     // Received a valid input
     const { input } = (event as CustomEvent<{ input: string }>).detail
 
-    console.log(input)
-
     // Note This event could probably go straight from `row > core`
     // instead of `row > controller > core`, but I wanted some wiggle
     // room for extra validation/loggin if needed later

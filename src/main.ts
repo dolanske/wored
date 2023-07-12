@@ -9,7 +9,7 @@ import { ElKeyboard } from './elements/Keyboard'
 // Main configuration
 export const cfg = {
   WORD_LENGTH: 5,
-  AVAILABLE_ATTEMPTS: 6,
+  AVAILABLE_ATTEMPTS: 2,
 }
 
 // Main game state object
@@ -129,6 +129,7 @@ export async function run(mountTo: string) {
       game.win = true
       game.running = false
       game.timestamps.to = Date.now()
+
       Keyboard.disable()
 
       console.log(`[${word}] Game over! You won!`)
