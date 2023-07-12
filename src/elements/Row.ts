@@ -34,7 +34,7 @@ export class ElRow extends HTMLElement {
 
       const { char } = (event as CustomEvent<{ char: string }>).detail
       // SECTION: LOGGING
-      console.log('Pressed Letter:', `"${char}"`)
+      console.log('Pressed:', `"${char}"`)
 
       if (this.input.length >= cfg.WORD_LENGTH)
         return
@@ -77,8 +77,8 @@ export class ElRow extends HTMLElement {
       //    - contains special character
       //    - is not exactly length === cfg.ATTEMPTS
       //    - word does not exist at all
-      if (!isValidInput(this.input)) {
-        this.input = ''
+      if (!isValidInput(this.input) || this.input.length !== cfg.WORD_LENGTH) {
+        // this.input = ''
         console.error(`Invalid input: "${this.input}"`)
       }
       else {

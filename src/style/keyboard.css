@@ -2,8 +2,8 @@ keyboard-controller {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
-  width: 588px;
+  gap: 6px;
+  width: 568px;
 }
 
 keyboard-controller button {
@@ -15,7 +15,6 @@ keyboard-controller button {
 
 keyboard-controller button:nth-child(20),
 keyboard-controller button:nth-child(28) {
-  width: auto !important;
-  padding: 0 20px;
+  width: 88px;
 }
 

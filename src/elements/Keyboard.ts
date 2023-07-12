@@ -1,7 +1,7 @@
 // $ is 'Enter' key
 
-import type { CLS_COLORS } from '../shared'
-import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER } from '../shared'
+import { CLS_COLORS, EVT_BACKSPACE, EVT_ENTER, EVT_LETTER } from '../shared'
+import type { Letter } from '../types'
 
 // # is 'Backspace' key
 const buttonString = 'qwertyuiopasdfghjkl$zxcvbnm#'
@@ -40,9 +40,18 @@ export class ElKeyboard extends HTMLElement {
     this.append(...this.buttons)
   }
 
-  setLetterColor(letter: string, color: keyof typeof CLS_COLORS) {
-    const index = buttonString.indexOf(letter)
-    this.buttons[index].classList.add(color)
+  // Iterates over letters and assigns their colors based on the results
+  highlightLetters(letters: Letter[]) {
+    for (const result of letters) {
+      const color = (result.isPresent
+        ? result.isExactMatch
+          ? CLS_COLORS.green
+          : CLS_COLORS.orange
+        : CLS_COLORS.gray) as keyof typeof CLS_COLORS
+
+      const index = buttonString.indexOf(result.letterUser)
+      this.buttons[index].classList.add(color)
+    }
   }
 
   // Send the character into the row element

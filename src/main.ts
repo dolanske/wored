@@ -114,6 +114,7 @@ export async function run(mountTo: string) {
     // Save round
     game.rounds.push(round)
     Controller.endOfRound(round.letters)
+    Keyboard.highlightLetters(round.letters)
 
     // Check wether game has been completed (eg. won) We are checking if
     // at least ONE game round has every single letter in the exact match

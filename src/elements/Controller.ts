@@ -25,6 +25,10 @@ export class ElController extends HTMLElement {
   }
 
   connectedCallback() {
+    this.updateListeners()
+  }
+
+  updateListeners() {
     for (let i = 0; i < this.rows.length; i++) {
       const row = this.rows[i]
 
@@ -58,6 +62,7 @@ export class ElController extends HTMLElement {
   endOfRound(roundResult: Letter[]) {
     const currentIndex = this.activeRowIndex
     this.activeRowIndex++
+    this.updateListeners()
 
     const row = this.rows[currentIndex]
 

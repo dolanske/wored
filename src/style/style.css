@@ -25,13 +25,15 @@ h1 {
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 4rem;
   text-align: center;
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 64px;
   align-items: center;
   flex-direction: column;
+  border: 1px solid #353535;
+  border-radius: 16px;
 }
 
 .card {
@@ -75,13 +77,13 @@ button:focus-visible {
 }
 
 .color-orange {
-  background-color: #e0823d;
+  background-color: #e0823d !important;
 }
 
 .color-green {
-  background-color: #57ab5a;
+  background-color: #57ab5a !important;
 }
 
 .color-gray {
-  background-color: #353535;
+  background-color: #353535 !important;
 }
