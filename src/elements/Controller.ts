@@ -47,8 +47,9 @@ export class ElController extends HTMLElement {
     // instead of `row > controller > core`, but I wanted some wiggle
     // room for extra validation/loggin if needed later
     const emit = new CustomEvent(EVT_ROW_SUBMIT_TO_CORE, {
-      bubbles: false,
+      bubbles: true,
       detail: { input },
+      composed: true,
     })
 
     this.dispatchEvent(emit)

@@ -5,8 +5,7 @@
 import { cfg } from '../main'
 import type { CLS_COLORS } from '../shared'
 import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER, EVT_ROW_SUBMIT } from '../shared'
-import { replaceAt } from '../util'
-import { isValidEnglishWord, isValidInput } from '../validate'
+import { isValidInput } from '../validate'
 
 export class ElRow extends HTMLElement {
   input = ''
@@ -41,7 +40,8 @@ export class ElRow extends HTMLElement {
         return
 
       const index = this.input.length
-      replaceAt(this.input, index, char)
+
+      this.input += char
       this.cells[index].textContent = char
     })
 
@@ -52,8 +52,12 @@ export class ElRow extends HTMLElement {
 
       // SECTION: LOGGING
       console.log('Pressed Backspace')
-      if (this.input.length > 0)
-        replaceAt(this.input, this.input.length - 1, null)
+      if (this.input.length > 0) {
+        const index = this.input.length - 1
+
+        this.input = this.input.substring(0, index)
+        this.cells[index].textContent = ''
+      }
     })
 
     window.addEventListener(EVT_ENTER, async (event) => {
@@ -73,7 +77,7 @@ export class ElRow extends HTMLElement {
       //    - contains special character
       //    - is not exactly length === cfg.ATTEMPTS
       //    - word does not exist at all
-      if (!isValidInput(this.input) || !(await isValidEnglishWord(this.input))) {
+      if (!isValidInput(this.input)) {
         this.input = ''
         console.error(`Invalid input: "${this.input}"`)
       }
@@ -91,9 +95,9 @@ export class ElRow extends HTMLElement {
 
   disconnectedCallback() {
     // Remove all listeners when element is removed from screen
-    this.removeEventListener(EVT_LETTER, () => { })
-    this.removeEventListener(EVT_BACKSPACE, () => { })
-    this.removeEventListener(EVT_ENTER, () => { })
+    window.removeEventListener(EVT_LETTER, () => { })
+    window.removeEventListener(EVT_BACKSPACE, () => { })
+    window.removeEventListener(EVT_ENTER, () => { })
   }
 
   setInputStatusAtIndex(index: number, color: keyof typeof CLS_COLORS) {

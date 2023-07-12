@@ -38,8 +38,6 @@ export class ElKeyboard extends HTMLElement {
 
   connectedCallback() {
     this.append(...this.buttons)
-
-    console.log(this)
   }
 
   setLetterColor(letter: string, color: keyof typeof CLS_COLORS) {

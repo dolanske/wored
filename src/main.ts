@@ -81,7 +81,7 @@ export async function run(mountTo: string) {
   App?.append(Controller, Keyboard)
 
   // Is called whenever a valid user input has been submitted
-  Controller.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
+  document.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
     const { input } = (event as CustomEvent<{ input: string }>).detail
 
     const round: Round = {
