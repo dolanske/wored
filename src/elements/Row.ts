@@ -3,36 +3,65 @@
 // form controller
 
 import { cfg } from '../main'
-import { EVT_ROW_SUBMIT } from '../shared'
+import type { CLS_COLORS } from '../shared'
+import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER, EVT_ROW_SUBMIT } from '../shared'
 import { replaceAt } from '../util'
 import { isValidEnglishWord, isValidInput } from '../validate'
 
-export class ElRow extends HTMLFormElement {
+export class ElRow extends HTMLElement {
   input = ''
   isActive = false
-  cells: HTMLInputElement[] = []
+  cells: HTMLDivElement[] = []
   #isValidating = false
 
   constructor() {
     super()
+    this.classList.add('row')
 
     // Generate each input cell
     for (let i = 0; i < cfg.WORD_LENGTH; i++) {
-      const cell = document.createElement('input')
-      cell.setAttribute('maxlength', '1')
-      cell.setAttribute('type', 'text')
+      const cell = document.createElement('div')
+      cell.classList.add('cell')
       this.cells.push(cell)
+      this.appendChild(cell)
     }
-
-    // Append everything to the element root
-    this.append(...this.cells)
-    // this.disable()
   }
 
   connectedCallback() {
-    this.addEventListener('submit', async (event) => {
+    // This is sent from the keyboard each time a new letter is added
+    window.addEventListener(EVT_LETTER, (event) => {
+      if (!this.isActive)
+        return
+
+      const { char } = (event as CustomEvent<{ char: string }>).detail
+      // SECTION: LOGGING
+      console.log('Pressed Letter:', `"${char}"`)
+
+      if (this.input.length >= cfg.WORD_LENGTH)
+        return
+
+      const index = this.input.length
+      replaceAt(this.input, index, char)
+      this.cells[index].textContent = char
+    })
+
+    // Fired when backspace is pressed, removes last letter
+    window.addEventListener(EVT_BACKSPACE, () => {
+      if (!this.isActive)
+        return
+
+      // SECTION: LOGGING
+      console.log('Pressed Backspace')
+      if (this.input.length > 0)
+        replaceAt(this.input, this.input.length - 1, null)
+    })
+
+    window.addEventListener(EVT_ENTER, async (event) => {
+      if (!this.isActive)
+        return
+
       event.preventDefault()
-      console.log('submitted')
+      console.log('Submitted Row')
 
       // Abort if validation is in progress
       if (this.#isValidating)
@@ -60,36 +89,14 @@ export class ElRow extends HTMLFormElement {
     })
   }
 
-  enable() {
-    for (let i = 0; i < this.cells.length; i++) {
-      const cell = this.cells[i]
-      cell.style.removeProperty('pointer-events')
-      cell.removeAttribute('disabled')
-      cell.removeEventListener('input', (e) => {
-        this.__cellInputHandler(e, i, cell)
-      })
-    }
+  disconnectedCallback() {
+    // Remove all listeners when element is removed from screen
+    this.removeEventListener(EVT_LETTER, () => { })
+    this.removeEventListener(EVT_BACKSPACE, () => { })
+    this.removeEventListener(EVT_ENTER, () => { })
   }
 
-  disable() {
-    for (let i = 0; i < this.cells.length; i++) {
-      const cell = this.cells[i]
-      cell.style.pointerEvents = 'none'
-      cell.setAttribute('disabled', 'true')
-      cell.removeEventListener('input', (e) => {
-        this.__cellInputHandler(e, i, cell)
-      })
-    }
-  }
-
-  // Used for tracking user inputs
-  __cellInputHandler(event: Event, index: number, input: HTMLInputElement) {
-    event.preventDefault()
-    event.stopPropagation()
-    replaceAt(this.input, index, input.value.toLowerCase())
-  }
-
-  setInputStatusAtIndex(index: number, color: keyof typeof cfg.COLORS) {
-    this.cells[index].style.backgroundColor = color
+  setInputStatusAtIndex(index: number, color: keyof typeof CLS_COLORS) {
+    this.cells[index].classList.add(color)
   }
 }

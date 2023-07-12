@@ -2,7 +2,7 @@ import type { Game, Round } from './types'
 import { isSameDay } from './util'
 import './style/index.css'
 import { EVT_ROW_SUBMIT_TO_CORE } from './shared'
-import { ElController } from './elements/controller'
+import { ElController } from './elements/Controller'
 import { register } from './dom'
 import { ElKeyboard } from './elements/Keyboard'
 
@@ -10,12 +10,6 @@ import { ElKeyboard } from './elements/Keyboard'
 export const cfg = {
   WORD_LENGTH: 5,
   AVAILABLE_ATTEMPTS: 6,
-  COLORS: {
-    // RED: '#f47068',
-    GREEN: '#57ab5a',
-    ORANGE: '#e0823d',
-    GRAY: '#aeaeae',
-  },
 }
 
 // Main game state object

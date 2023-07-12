@@ -1,15 +1,15 @@
-input {
-  width: 48px;
-  height: 48px;
+.cell {
+  width: 56px;
+  height: 64px;
   border-radius: 4px;
   outline: none;
   text-align: center;
   font-size: 1.6rem;
   border: none;
-  background-color: #313131;
+  background-color: #202020;
 }
 
-input:disabled {
+.cell.disabled {
   background-color: #1a1a1a;
 }
 
@@ -19,7 +19,7 @@ form-controller {
   gap: 8px;
 }
 
-form {
+.row {
   display: flex;
   gap: 8px;
 }
