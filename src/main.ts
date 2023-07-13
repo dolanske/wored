@@ -65,18 +65,14 @@ async function fetchWord(): Promise<string> {
 export async function run(mountTo: string) {
   console.clear()
 
-  // Fetch the word
-  const word = await fetchWord()
+  // Get cached game state and assign it
+  const cachedState = getGameState()
+
+  // Fetch the word or assign it from cached satte
+  const word = cachedState ? cachedState.game.word : await fetchWord()
 
   // SECTION: LOGGING
   console.log(`---------- New Game: "${word}" ----------`)
-
-  game.running = true
-  game.word = word
-  game.timestamps.from = Date.now()
-
-  // Get cached game state and assign it
-  const cachedState = getGameState()
 
   // Assign cached state before components are rendered, in case they take use
   // the global state
@@ -84,6 +80,11 @@ export async function run(mountTo: string) {
     Object.assign(game, cachedState.game)
     Object.assign(game.timestamps, cachedState.game.timestamps)
     Object.assign(cfg, cachedState.cfg)
+  }
+  else {
+    game.running = true
+    game.word = word
+    game.timestamps.from = Date.now()
   }
 
   const Controller = new ElController()
