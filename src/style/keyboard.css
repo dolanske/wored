@@ -1,4 +1,4 @@
-keyboard-controller {
+wored-keyboard {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -6,20 +6,20 @@ keyboard-controller {
   width: 568px;
 }
 
-keyboard-controller button {
+wored-keyboard button {
   width: 48px;
   height: 64px;
   padding: 0;
   font-size: 1rem;
 }
 
-keyboard-controller button:disabled {
+wored-keyboard button:disabled {
   pointer-events: none;
   color: var(--color-text);
 }
 
-keyboard-controller button:nth-child(20),
-keyboard-controller button:nth-child(28) {
+wored-keyboard button:nth-child(20),
+wored-keyboard button:nth-child(28) {
   width: 88px;
 }
 

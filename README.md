@@ -13,7 +13,6 @@ TBA
   - [ ] Specify amount of attempts
   - [ ] Specify the length of the word
     - [ ] Both of these (del S_GAME, S_WORD)
-  - [ ] Allows to reset the game's cached results (S_GAME)
   - [ ] Allows clearing history (del S_HISTORY)
   - [ ] Allows restarting the game (del S_GAME)
   - [ ] Allows restarting the game with new word (del S_GAME, S_WORD)

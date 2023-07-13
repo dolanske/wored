@@ -1,7 +1,7 @@
 import type { Game, Round } from './types'
 import { getColorFromResult, isSameDay } from './util'
 import './style/index.css'
-import { EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
+import { EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
 import { ElController } from './elements/Controller'
 import { register } from './dom'
 import { ElKeyboard } from './elements/Keyboard'
@@ -10,7 +10,7 @@ import { getGameState, saveGameState, saveHistoryEntry } from './results'
 // Main configuration
 export const cfg = {
   WORD_LENGTH: 5,
-  AVAILABLE_ATTEMPTS: 2,
+  AVAILABLE_ATTEMPTS: 6,
 }
 
 // Main game state object
@@ -138,11 +138,11 @@ export async function run(mountTo: string) {
     // the letter corresponds with the word)
     for (let i = 0; i < cfg.WORD_LENGTH; i++) {
       const letterUser = input.charAt(i)
-      const letterActual = word.charAt(i)
+      const letterActual = game.word.charAt(i)
       const letterResult = {
         letterActual,
         letterUser,
-        isPresent: word.includes(letterUser),
+        isPresent: game.word.includes(letterUser),
         isExactMatch: letterUser === letterActual,
       }
 
@@ -161,6 +161,23 @@ export async function run(mountTo: string) {
     // Check wether game has been completed (eg. won) We are checking if at
     // least ONE game round has every single letter in the exact match
     checkAndHandleGameOver()
+  })
+
+  // Is called when a game property has been changed
+  document.addEventListener(EVT_GAME_RELOAD_TO_CORE, async () => {
+    // 1. Fetch new word, the handler will automatically remove the
+    //    cached word if needed
+    game.word = await fetchWord()
+    // 2. Reset all UI without reloading the page. We can re-initialize
+    //    all the elements by creating a new instance of them and using
+    //    the `replaceWith()` method on themselves
+    const NewController = new ElController()
+    const NewKeyboard = new ElKeyboard()
+
+    Controller.replaceWith(NewController)
+    Keyboard.replaceWith(NewKeyboard)
+
+    console.log(cfg, game.word)
   })
 
   function checkAndHandleGameOver() {
@@ -187,12 +204,12 @@ export async function run(mountTo: string) {
     // SECTION: Game over: WIN
     if (isGameCompleted) {
       game.win = true
-      console.log(`[${word}] Game over! You won!`)
+      console.log(`[${game.word}] Game over! You won!`)
     }
 
     // SECTION: Game over: LOST
     if (!isGameCompleted)
-      console.log(`[${word}] Game over! You lost`)
+      console.log(`[${game.word}] Game over! You lost`)
 
     const finalGameObject = { game, cfg, timestamp: Date.now() }
     saveGameState(finalGameObject)

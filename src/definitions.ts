@@ -9,12 +9,13 @@ export const EVT_BACKSPACE = 'wored:backspace'
 
 // This is when form controller lets the game core know
 export const EVT_ROW_SUBMIT_TO_CORE = 'wored:core:row'
+export const EVT_GAME_RELOAD_TO_CORE = 'wored:core:reload'
 
 // Elements
-export const EL_ROW = 'form-row'
-export const EL_CONTROLLER = 'form-controller'
-export const EL_STATUS_BAR = 'status-bar'
-export const EL_KEYBOARD = 'keyboard-controller'
+export const EL_ROW = 'wored-row'
+export const EL_CONTROLLER = 'wored-controller'
+export const EL_KEYBOARD = 'wored-keyboard'
+export const EL_DROPDOWN = 'wored-settings-dropdown'
 
 export const CLS_COLORS = {
   orange: 'color-orange',
