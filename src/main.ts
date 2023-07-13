@@ -1,7 +1,7 @@
 import type { Game, Round } from './types'
 import { getColorFromResult, isSameDay } from './util'
 import './style/index.css'
-import { EVT_ROW_SUBMIT_TO_CORE } from './definitions'
+import { EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
 import { ElController } from './elements/Controller'
 import { register } from './dom'
 import { ElKeyboard } from './elements/Keyboard'
@@ -29,7 +29,7 @@ async function fetchWord(): Promise<string> {
   // Check wether today's word has already been fetched. The reason for that is
   // to prevent getting random word on each page reload. We want to save the
   // word and only refresh it the next day
-  const cachedRaw = localStorage.getItem('word')
+  const cachedRaw = localStorage.getItem(S_WORD)
 
   // Compare cached timestamps and return cached word or fetch a new one
   if (cachedRaw) {
@@ -49,7 +49,7 @@ async function fetchWord(): Promise<string> {
     .then(res => res.json())
     .then(([word]) => {
       // Cache the new word
-      localStorage.setItem('word', JSON.stringify({
+      localStorage.setItem(S_WORD, JSON.stringify({
         word,
         timestamp: Date.now(),
         length: cfg.WORD_LENGTH,
