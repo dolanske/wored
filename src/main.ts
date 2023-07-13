@@ -168,6 +168,8 @@ export async function run(mountTo: string) {
     // 1. Fetch new word, the handler will automatically remove the
     //    cached word if needed
     game.word = await fetchWord()
+    game.rounds = []
+    game.timestamps.from = Date.now()
     // 2. Reset all UI without reloading the page. We can re-initialize
     //    all the elements by creating a new instance of them and using
     //    the `replaceWith()` method on themselves
