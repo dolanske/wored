@@ -1,10 +1,11 @@
 import type { Game, Round } from './types'
-import { isSameDay } from './util'
+import { getColorFromResult, isSameDay } from './util'
 import './style/index.css'
-import { EVT_ROW_SUBMIT_TO_CORE } from './shared'
+import { EVT_ROW_SUBMIT_TO_CORE } from './definitions'
 import { ElController } from './elements/Controller'
 import { register } from './dom'
 import { ElKeyboard } from './elements/Keyboard'
+import { getGameState, saveGameState, saveHistoryEntry } from './results'
 
 // Main configuration
 export const cfg = {
@@ -25,9 +26,9 @@ export const game: Game = {
 }
 
 async function fetchWord(): Promise<string> {
-  // Check wether today's word has already been fetched. The reason for
-  // that is to prevent getting random word on each page reload. We want
-  // to save the word and only refresh it the next day
+  // Check wether today's word has already been fetched. The reason for that is
+  // to prevent getting random word on each page reload. We want to save the
+  // word and only refresh it the next day
   const cachedRaw = localStorage.getItem('word')
 
   // Compare cached timestamps and return cached word or fetch a new one
@@ -74,11 +75,52 @@ export async function run(mountTo: string) {
   game.word = word
   game.timestamps.from = Date.now()
 
+  // Get cached game state and assign it
+  const cachedState = getGameState()
+
+  // Assign cached state before components are rendered, in case they take use
+  // the global state
+  if (cachedState) {
+    Object.assign(game, cachedState.game)
+    Object.assign(game.timestamps, cachedState.game.timestamps)
+    Object.assign(cfg, cachedState.cfg)
+  }
+
   const Controller = new ElController()
   const Keyboard = new ElKeyboard()
-  // const controller = document.createElement(EL_CONTROLLER)
   const App = document.querySelector(mountTo)
+
+  if (cachedState)
+    Controller.activeRowIndex = cachedState.game.rounds.length
+
   App?.append(Controller, Keyboard)
+
+  // This will write the progress of the cached game so far into the controller
+  if (cachedState) {
+    // Update Row UI
+    if (!cachedState.game.running)
+      Keyboard.disable()
+
+    for (let i = 0; i < cachedState.game.rounds.length; i++) {
+      const row = Controller.rows[i]
+      const round = cachedState.game.rounds[i]
+
+      row.isActive = false
+      row.input = round.userGuess
+
+      for (let i = 0; i < round.letters.length; i++) {
+        const letter = round.letters[i]
+        const cell = row.cells[i]
+
+        cell.innerText = letter.letterUser
+
+        const color = getColorFromResult(letter)
+        row.setInputStatusAtIndex(i, color)
+      }
+
+      Keyboard.highlightLetters(round.letters)
+    }
+  }
 
   // Is called whenever a valid user input has been submitted
   document.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
@@ -90,13 +132,12 @@ export async function run(mountTo: string) {
       letters: [],
     }
 
-    // Iterate over each letter in the user input We are checking for if
-    // letter is present in the word (anywhere) or if it's the exact
-    // match (index of the letter corresponds with the word)
+    // Iterate over each letter in the user input We are checking for if letter
+    // is present in the word (anywhere) or if it's the exact match (index of
+    // the letter corresponds with the word)
     for (let i = 0; i < cfg.WORD_LENGTH; i++) {
       const letterUser = input.charAt(i)
       const letterActual = word.charAt(i)
-
       const letterResult = {
         letterActual,
         letterUser,
@@ -116,28 +157,45 @@ export async function run(mountTo: string) {
     Controller.endOfRound(round.letters)
     Keyboard.highlightLetters(round.letters)
 
-    // Check wether game has been completed (eg. won) We are checking if
-    // at least ONE game round has every single letter in the exact match
+    // Check wether game has been completed (eg. won) We are checking if at
+    // least ONE game round has every single letter in the exact match
     checkAndHandleGameOver()
   })
 
   function checkAndHandleGameOver() {
     const isGameCompleted = game.rounds.some(round => round.letters.every(letter => letter.isExactMatch))
 
-    // SECTION: Game has been won
+    // Return if game has not completed its final round
+    if (cfg.AVAILABLE_ATTEMPTS !== game.rounds.length) {
+      // Save the current game state at the end of each round The code is
+      // duplicated because we want to explicity change if game is running or
+      // not still running === game isn't completed
+      saveGameState({ game, cfg, timestamp: Date.now() })
+      return
+    }
+
+    game.running = false
+    game.timestamps.to = Date.now()
+    Keyboard.disable()
+
+    // Save history entry only when game has ended
+    // REVIEW: we could have added
+    // saveGameState() to history function too but this is cleaner as these
+    // functions shouldn't produce side effects
+
+    // SECTION: Game over: WIN
     if (isGameCompleted) {
       game.win = true
-      game.running = false
-      game.timestamps.to = Date.now()
-
-      Keyboard.disable()
-
       console.log(`[${word}] Game over! You won!`)
     }
 
-    // SECTION: Game over stuff
-    if (!isGameCompleted && cfg.AVAILABLE_ATTEMPTS === game.rounds.length)
+    // SECTION: Game over: LOST
+    if (!isGameCompleted)
       console.log(`[${word}] Game over! You lost`)
+
+    const finalGameObject = { game, cfg, timestamp: Date.now() }
+    saveGameState(finalGameObject)
+    saveHistoryEntry(finalGameObject)
   }
 }
 

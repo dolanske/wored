@@ -1,5 +1,6 @@
-import { CLS_COLORS, EVT_BACKSPACE, EVT_ENTER, EVT_LETTER } from '../shared'
+import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER } from '../definitions'
 import type { Letter } from '../types'
+import { getColorFromResult } from '../util'
 
 // # is 'Backspace' key
 // $ is 'Enter' key
@@ -44,12 +45,7 @@ export class ElKeyboard extends HTMLElement {
   // Iterates over letters and assigns their colors based on the results
   highlightLetters(letters: Letter[]) {
     for (const result of letters) {
-      const color = (result.isPresent
-        ? result.isExactMatch
-          ? CLS_COLORS.green
-          : CLS_COLORS.orange
-        : CLS_COLORS.gray) as keyof typeof CLS_COLORS
-
+      const color = getColorFromResult(result)
       const index = buttonString.indexOf(result.letterUser)
       this.buttons[index].classList.add(color)
     }

@@ -3,8 +3,8 @@
 // form controller
 
 import { cfg } from '../main'
-import type { CLS_COLORS } from '../shared'
-import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER, EVT_ROW_SUBMIT } from '../shared'
+import type { CLS_COLORS } from '../definitions'
+import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER, EVT_ROW_SUBMIT } from '../definitions'
 import { isValidInput } from '../validate'
 
 export class ElRow extends HTMLElement {

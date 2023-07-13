@@ -3,8 +3,9 @@
 // 2. Listening to row events and forwarding them to the game's core
 
 import { cfg } from '../main'
-import { CLS_COLORS, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../shared'
+import { EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../definitions'
 import type { Letter } from '../types'
+import { getColorFromResult } from '../util'
 import { ElRow } from './Row'
 
 export class ElController extends HTMLElement {
@@ -67,12 +68,7 @@ export class ElController extends HTMLElement {
 
     for (let i = 0; i < row.cells.length; i++) {
       const result = roundResult[i]
-      const color = (result.isPresent
-        ? result.isExactMatch
-          ? CLS_COLORS.green
-          : CLS_COLORS.orange
-        : CLS_COLORS.gray) as keyof typeof CLS_COLORS
-
+      const color = getColorFromResult(result)
       row.setInputStatusAtIndex(i, color)
     }
 

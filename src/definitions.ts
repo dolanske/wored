@@ -21,3 +21,8 @@ export const CLS_COLORS = {
   green: 'color-green',
   gray: 'color-gray',
 }
+
+// Local storage items
+export const S_WORD = 'wored:word'
+export const S_HISTORY = 'wored:history'
+export const S_GAME = 'wored:game'

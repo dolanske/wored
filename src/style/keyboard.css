@@ -13,6 +13,11 @@ keyboard-controller button {
   font-size: 1rem;
 }
 
+keyboard-controller button:disabled {
+  pointer-events: none;
+  color: var(--color-text);
+}
+
 keyboard-controller button:nth-child(20),
 keyboard-controller button:nth-child(28) {
   width: 88px;

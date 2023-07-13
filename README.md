@@ -12,11 +12,14 @@ TBA
 - [ ] Dropdown to the right of the title for game configuration
   - [ ] Specify amount of attempts
   - [ ] Specify the length of the word
-  - [ ] Allows to reset the game's cached results
-  - [ ] Allows restarting the game
+    - [ ] Both of these (del S_GAME, S_WORD)
+  - [ ] Allows to reset the game's cached results (S_GAME)
+  - [ ] Allows clearing history (del S_HISTORY)
+  - [ ] Allows restarting the game (del S_GAME)
+  - [ ] Allows restarting the game with new word (del S_GAME, S_WORD)
 
-- [ ] Cache all results (if won or lost) for the rest of the day
-- [ ] Create a history object, which at the end of the game also saves the game object to a separate local storage item
-  - [ ] Both of these will require the components to be able to load outside state during initialization
+- [x] Cache all results (if won or lost) for the rest of the day
+- [x] Create a history object, which at the end of the game also saves the game object to a separate local storage item
+  - [x] Both of these will require the components to be able to load outside state during initialization
 
 - [ ] Make sure it works on mobile
