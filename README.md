@@ -3,11 +3,9 @@
 I was inspired by [Jessica's](https://github.com/jvlazar) wordle replica project, so I decided to implement one myself.
 The only reference I had was the fact that I've played wordle before.
 
-## Implementation
+Unlike wordle, wored offers a few additions to the normal game.
 
-TBA
+- You can change the amount of attempts. Minimum is 1, maximum 16
+- You can change the length of the word. Minimum is 3 letters, maximum is 12
 
-## TODO
-
-- [ ] Make sure it works on mobile
-- [ ] Add a statistics tab
+![Example Screenshot](https://i.imgur.com/d2BxIeg.png)
