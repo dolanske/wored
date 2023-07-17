@@ -27,81 +27,85 @@ export class ElRow extends HTMLElement {
   }
 
   connectedCallback() {
-    // This is sent from the keyboard each time a new letter is added
-    window.addEventListener(EVT_LETTER, (event) => {
-      if (!this.isActive)
-        return
+    document.addEventListener(EVT_LETTER, this.__handleLetter.bind(this))
+    document.addEventListener(EVT_BACKSPACE, this.__handleBackspace.bind(this))
+    document.addEventListener(EVT_ENTER, this.__handleEnter.bind(this))
+  }
 
-      const { char } = (event as CustomEvent<{ char: string }>).detail
-      // SECTION: LOGGING
-      console.log('Pressed:', `"${char}"`)
+  __handleLetter(event: Event) {
+    if (!this.isActive || !document.contains(this))
+      return
 
-      if (this.input.length >= cfg.WORD_LENGTH)
-        return
+    const { char } = (event as CustomEvent<{ char: string }>).detail
+    // SECTION: LOGGING
+    console.log('Pressed:', `"${char}"`)
 
-      const index = this.input.length
+    if (this.input.length >= cfg.WORD_LENGTH)
+      return
 
-      this.input += char
-      this.cells[index].textContent = char
-    })
+    const index = this.input.length
+    this.input += char
+    this.cells[index].textContent = char
+  }
 
-    // Fired when backspace is pressed, removes last letter
-    window.addEventListener(EVT_BACKSPACE, () => {
-      if (!this.isActive)
-        return
+  __handleBackspace() {
+    if (!this.isActive || !document.contains(this))
+      return
 
-      // SECTION: LOGGING
-      console.log('Pressed Backspace')
-      if (this.input.length > 0) {
-        const index = this.input.length - 1
+    // SECTION: LOGGING
+    console.log('Pressed Backspace')
+    if (this.input.length > 0) {
+      const index = this.input.length - 1
 
-        this.input = this.input.substring(0, index)
-        this.cells[index].textContent = ''
-      }
-    })
+      this.input = this.input.substring(0, index)
+      this.cells[index].textContent = ''
+    }
+  }
 
-    window.addEventListener(EVT_ENTER, async (event) => {
-      if (!this.isActive)
-        return
+  __handleEnter(event: Event) {
+    if (!this.isActive || !document.contains(this))
+      return
 
-      event.preventDefault()
-      console.log('Submitted Row')
+    event.preventDefault()
+    // SECTION: LOGGING
+    console.log('Submitted Row')
 
-      console.log(this.#isValidating)
+    // Abort if validation is in progress
+    if (this.#isValidating)
+      return
 
-      // Abort if validation is in progress
-      if (this.#isValidating)
-        return
+    this.#isValidating = true
+    // Validate input, is invalid if:
+    //    - contains numbers
+    //    - contains special character
+    //    - is not exactly length === cfg.ATTEMPTS
+    //    - word does not exist at all
+    if (!isValidInput(this.input) || this.input.length !== cfg.WORD_LENGTH) {
+      // this.input = ''
+      console.error(`Invalid input: "${this.input}"`)
+    }
+    else {
+      // Input is ok and is being emitted to the parent component
+      const emit = new CustomEvent(EVT_ROW_SUBMIT, {
+        bubbles: false,
+        detail: { input: this.input },
+      })
 
-      this.#isValidating = true
-      // Validate input, is invalid if:
-      //    - contains numbers
-      //    - contains special character
-      //    - is not exactly length === cfg.ATTEMPTS
-      //    - word does not exist at all
-      if (!isValidInput(this.input) || this.input.length !== cfg.WORD_LENGTH) {
-        // this.input = ''
-        console.error(`Invalid input: "${this.input}"`)
-      }
-      else {
-        // Input is ok and is being emitted to the parent component
-        const emit = new CustomEvent(EVT_ROW_SUBMIT, {
-          bubbles: false,
-          detail: { input: this.input },
-        })
+      this.dispatchEvent(emit)
+    }
 
-        this.dispatchEvent(emit)
-      }
-
-      this.#isValidating = false
-    })
+    this.#isValidating = false
   }
 
   disconnectedCallback() {
+    this.replaceChildren()
+    this.isActive = false
+    this.cells = []
+
     // Remove all listeners when element is removed from screen
-    window.removeEventListener(EVT_LETTER, () => { })
-    window.removeEventListener(EVT_BACKSPACE, () => { })
-    window.removeEventListener(EVT_ENTER, () => { })
+    document.removeEventListener(EVT_LETTER, this.__handleLetter.bind(this))
+    document.removeEventListener(EVT_BACKSPACE, this.__handleBackspace.bind(this))
+    document.removeEventListener(EVT_ENTER, this.__handleEnter.bind(this))
   }
 
   setInputStatusAtIndex(index: number, color: keyof typeof CLS_COLORS) {

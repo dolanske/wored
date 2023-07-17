@@ -75,14 +75,20 @@ export class ElKeyboard extends HTMLElement {
 
   // Submit the current row
   __enterHandler() {
-    const emit = new CustomEvent(EVT_ENTER, { bubbles: false })
-    window.dispatchEvent(emit)
+    const emit = new CustomEvent(EVT_ENTER, {
+      bubbles: true,
+      composed: true,
+    })
+    this.dispatchEvent(emit)
   }
 
   // If current active index has a letter, remove it
   __backspaceHandler() {
-    const emit = new CustomEvent(EVT_BACKSPACE, { bubbles: false })
-    window.dispatchEvent(emit)
+    const emit = new CustomEvent(EVT_BACKSPACE, {
+      bubbles: true,
+      composed: true,
+    })
+    this.dispatchEvent(emit)
   }
 
   // Allows users to type on their keyboard

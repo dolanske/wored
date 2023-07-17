@@ -87,8 +87,8 @@ export async function run(mountTo: string) {
     game.timestamps.from = Date.now()
   }
 
-  const Controller = new ElController()
-  const Keyboard = new ElKeyboard()
+  let Controller = new ElController()
+  let Keyboard = new ElKeyboard()
   const App = document.querySelector(mountTo)
 
   if (cachedState)
@@ -173,20 +173,28 @@ export async function run(mountTo: string) {
     // 2. Reset all UI without reloading the page. We can re-initialize
     //    all the elements by creating a new instance of them and using
     //    the `replaceWith()` method on themselves
-    const NewController = new ElController()
-    const NewKeyboard = new ElKeyboard()
+    // const NewController =
+    // const NewKeyboard =
 
-    Controller.replaceWith(NewController)
-    Keyboard.replaceWith(NewKeyboard)
+    Controller.replaceChildren()
+    Controller.remove()
 
-    console.log(cfg, game.word)
+    Keyboard.replaceChildren()
+    Keyboard.remove()
+
+    requestAnimationFrame(() => {
+      Controller = new ElController()
+      Keyboard = new ElKeyboard()
+
+      App?.append(Controller, Keyboard)
+    })
   })
 
   function checkAndHandleGameOver() {
     const isGameCompleted = game.rounds.some(round => round.letters.every(letter => letter.isExactMatch))
 
     // Return if game has not completed its final round
-    if (cfg.AVAILABLE_ATTEMPTS !== game.rounds.length) {
+    if (cfg.AVAILABLE_ATTEMPTS !== game.rounds.length && !isGameCompleted) {
       // Save the current game state at the end of each round The code is
       // duplicated because we want to explicity change if game is running or
       // not still running === game isn't completed
