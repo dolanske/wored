@@ -17,14 +17,16 @@
   "exports": {
     ".": {
       "import": "./dist/wored.js"
+    },
+    "./style": {
+      "import": "./dist/style.css"
     }
   },
   "main": "./dist/wored.js",
   "module": "./dist/wored.js",
   "types": "./dist/main.d.ts",
   "files": [
-    "dist/*",
-    "dist/style.css"
+    "dist"
   ],
   "scripts": {
     "dev": "vite",
