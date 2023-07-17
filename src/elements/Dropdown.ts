@@ -31,6 +31,7 @@ function generateSelect(textContent: string, min: number, max: number, fn: (even
 export class ElDropdown extends HTMLElement {
   open = false
   wrap: HTMLDivElement = document.createElement('div')
+  trigger: HTMLButtonElement = document.createElement('button')
 
   constructor() {
     super()
@@ -53,12 +54,12 @@ export class ElDropdown extends HTMLElement {
 
     //
     const btnRestartGame = document.createElement('button')
-    btnRestartGame.innerText = 'Start Again'
-    btnRestartGame.addEventListener('click', this.__handleRestartGame)
+    btnRestartGame.innerText = 'Restart'
+    btnRestartGame.addEventListener('click', this.__handleRestartGame.bind(this))
 
     const btnRefreshGame = document.createElement('button')
     btnRefreshGame.innerText = 'New Word'
-    btnRefreshGame.addEventListener('click', this.__handleRefreshGame)
+    btnRefreshGame.addEventListener('click', this.__handleRefreshGame.bind(this))
 
     this.wrap.classList.add('drp-wrap')
 
@@ -72,17 +73,17 @@ export class ElDropdown extends HTMLElement {
       btnRestartGame,
     )
 
-    const trigger = document.createElement('button')
-    trigger.innerHTML = MenuIcon
-    trigger.classList.add('drp-trigger')
-    trigger.addEventListener('click', () => this.toggle())
+    this.trigger.innerHTML = MenuIcon
+    this.trigger.classList.add('drp-trigger')
+    this.trigger.addEventListener('click', this.toggle.bind(this))
 
-    this.append(trigger, this.wrap)
+    this.append(this.trigger, this.wrap)
   }
 
   toggle() {
     this.open = !this.open
     this.wrap.style.display = this.open ? 'block' : 'none'
+    this.trigger.classList.toggle('active')
   }
 
   sendReloadEvent() {
@@ -97,6 +98,7 @@ export class ElDropdown extends HTMLElement {
     cfg.WORD_LENGTH = Number((event.target as HTMLSelectElement).value)
     localStorage.removeItem(S_GAME)
     localStorage.removeItem(S_WORD)
+    this.toggle()
     this.sendReloadEvent()
   }
 
@@ -104,16 +106,24 @@ export class ElDropdown extends HTMLElement {
   __handleAttemptCountSelect(event: Event) {
     cfg.AVAILABLE_ATTEMPTS = Number((event.target as HTMLSelectElement).value)
     localStorage.removeItem(S_GAME)
+    this.toggle()
     this.sendReloadEvent()
   }
 
   // Restart the game and get an new word
   __handleRefreshGame() {
     // remove S_GAME, S_WORD
+    localStorage.removeItem(S_GAME)
+    localStorage.removeItem(S_WORD)
+    this.toggle()
+    this.sendReloadEvent()
   }
 
   // Restart the game (but keep the word)
   __handleRestartGame() {
     // Remove S_GAME
+    localStorage.removeItem(S_GAME)
+    this.toggle()
+    this.sendReloadEvent()
   }
 }

@@ -29,6 +29,10 @@ h1 {
   margin-top: 0;
 }
 
+p {
+  margin-top: 0;
+}
+
 #app {
   margin: 0 auto;
   padding: 2rem;
@@ -53,6 +57,7 @@ button {
   cursor: pointer;
   transition: border-color 0.1s;
 }
+button.active,
 button:hover {
   border-color: var(--color-link-hover);
 }

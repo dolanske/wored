@@ -27,3 +27,6 @@ export const CLS_COLORS = {
 export const S_WORD = 'wored:word'
 export const S_HISTORY = 'wored:history'
 export const S_GAME = 'wored:game'
+
+// Classes
+export const CLS_WINNING_ROW = 'wored-winning-row'

@@ -3,7 +3,6 @@
 // form controller
 
 import { cfg } from '../main'
-import type { CLS_COLORS } from '../definitions'
 import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER, EVT_ROW_SUBMIT } from '../definitions'
 import { isValidInput } from '../validate'
 
@@ -108,7 +107,7 @@ export class ElRow extends HTMLElement {
     document.removeEventListener(EVT_ENTER, this.__handleEnter.bind(this))
   }
 
-  setInputStatusAtIndex(index: number, color: keyof typeof CLS_COLORS) {
+  setInputStatusAtIndex(index: number, color: string) {
     this.cells[index].classList.add(color)
   }
 }

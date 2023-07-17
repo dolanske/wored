@@ -1,7 +1,7 @@
 import type { Game, Round } from './types'
 import { getColorFromResult, isSameDay } from './util'
 import './style/index.css'
-import { EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
+import { CLS_COLORS, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
 import { ElController } from './elements/Controller'
 import { register } from './dom'
 import { ElKeyboard } from './elements/Keyboard'
@@ -105,6 +105,7 @@ export async function run(mountTo: string) {
     for (let i = 0; i < cachedState.game.rounds.length; i++) {
       const row = Controller.rows[i]
       const round = cachedState.game.rounds[i]
+      let winningRow = true
 
       row.isActive = false
       row.input = round.userGuess
@@ -117,7 +118,13 @@ export async function run(mountTo: string) {
 
         const color = getColorFromResult(letter)
         row.setInputStatusAtIndex(i, color)
+
+        if (color !== CLS_COLORS.green)
+          winningRow = false
       }
+
+      if (winningRow)
+        row.classList.add(CLS_WINNING_ROW)
 
       Keyboard.highlightLetters(round.letters)
     }
@@ -170,6 +177,10 @@ export async function run(mountTo: string) {
     game.word = await fetchWord()
     game.rounds = []
     game.timestamps.from = Date.now()
+    game.running = true
+
+    // SECTION: LOGGING
+    console.log(`---------- New Game: "${game.word}" ----------`)
     // 2. Reset all UI without reloading the page. We can re-initialize
     //    all the elements by creating a new instance of them and using
     //    the `replaceWith()` method on themselves

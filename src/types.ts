@@ -21,3 +21,6 @@ export interface Game {
     to: number
   }
 }
+
+// Util
+export type ValueOf<T> = T[keyof T]

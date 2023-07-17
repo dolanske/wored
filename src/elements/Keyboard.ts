@@ -1,4 +1,5 @@
 import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER } from '../definitions'
+import { game } from '../main'
 import type { Letter } from '../types'
 import { getColorFromResult } from '../util'
 
@@ -19,12 +20,12 @@ export class ElKeyboard extends HTMLElement {
       if (char === '$') {
         // Enter key
         el.textContent = 'ENTER'
-        el.addEventListener('click', this.__enterHandler)
+        el.addEventListener('click', this.__enterHandler.bind(this))
       }
       else if (char === '#') {
         // Backaspace key
         el.textContent = 'DELETE'
-        el.addEventListener('click', this.__backspaceHandler)
+        el.addEventListener('click', this.__backspaceHandler.bind(this))
       }
       else {
         // Normal letter key
@@ -35,7 +36,7 @@ export class ElKeyboard extends HTMLElement {
       return el
     })
 
-    document.addEventListener('keydown', e => this.__keyPressHandler(e))
+    document.addEventListener('keydown', this.__keyPressHandler.bind(this))
   }
 
   connectedCallback() {
@@ -60,7 +61,7 @@ export class ElKeyboard extends HTMLElement {
       btn.setAttribute('disabled', 'true')
     }
 
-    document.removeEventListener('keydown', e => this.__keyPressHandler(e))
+    document.removeEventListener('keydown', this.__keyPressHandler)
   }
 
   // Send the character into the row element
@@ -93,6 +94,9 @@ export class ElKeyboard extends HTMLElement {
 
   // Allows users to type on their keyboard
   __keyPressHandler(event: KeyboardEvent) {
+    if (!game.running)
+      return
+
     const { key } = event
     if (buttonString.includes(key))
       this.__letterHandler(key)

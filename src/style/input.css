@@ -27,4 +27,19 @@ wored-controller {
 .row {
   display: flex;
   gap: 12px;
+  position: relative;
+}
+
+
+.row.wored-winning-row::after {
+  content: url(/checkmark.svg);
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  position: absolute;
+  right: -48px;
+  top: 50%;
+  transform: translateY(-50%);
+  /* background-size: cover; */
 }

@@ -3,7 +3,7 @@
 // 2. Listening to row events and forwarding them to the game's core
 
 import { cfg } from '../main'
-import { EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../definitions'
+import { CLS_COLORS, CLS_WINNING_ROW, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../definitions'
 import type { Letter } from '../types'
 import { getColorFromResult } from '../util'
 import { ElRow } from './Row'
@@ -62,15 +62,24 @@ export class ElController extends HTMLElement {
 
   endOfRound(roundResult: Letter[]) {
     const currentIndex = this.activeRowIndex
+    const row = this.rows[currentIndex]
     this.activeRowIndex++
 
-    const row = this.rows[currentIndex]
+    // Will be true if all current cells are green
+    // Appends a class to the row
+    let winningRow = true
 
     for (let i = 0; i < row.cells.length; i++) {
       const result = roundResult[i]
       const color = getColorFromResult(result)
       row.setInputStatusAtIndex(i, color)
+
+      if (color !== CLS_COLORS.green)
+        winningRow = false
     }
+
+    if (winningRow)
+      row.classList.add(CLS_WINNING_ROW)
 
     this.updateListeners()
   }

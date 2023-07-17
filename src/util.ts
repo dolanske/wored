@@ -16,11 +16,9 @@ export function replaceAt(str: string, index: number, chr: any) {
 }
 
 export function getColorFromResult(round: Letter) {
-  console.log(round)
-
   return (round.isPresent
     ? round.isExactMatch
       ? CLS_COLORS.green
       : CLS_COLORS.orange
-    : CLS_COLORS.gray) as keyof typeof CLS_COLORS
+    : CLS_COLORS.gray)
 }
