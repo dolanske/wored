@@ -1,6 +1,6 @@
-var j = Object.defineProperty;
-var J = (s, t, e) => t in s ? j(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var u = (s, t, e) => (J(s, typeof t != "symbol" ? t + "" : t, e), e), k = (s, t, e) => {
+var X = Object.defineProperty;
+var F = (s, t, e) => t in s ? X(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var u = (s, t, e) => (F(s, typeof t != "symbol" ? t + "" : t, e), e), k = (s, t, e) => {
   if (!t.has(s))
     throw TypeError("Cannot " + e);
 };
@@ -9,12 +9,12 @@ var I = (s, t, e) => (k(s, t, "read from private field"), e ? e.call(s) : t.get(
     throw TypeError("Cannot add the same private member more than once");
   t instanceof WeakSet ? t.add(s) : t.set(s, e);
 }, b = (s, t, e, n) => (k(s, t, "write to private field"), n ? n.call(s, e) : t.set(s, e), e);
-const R = "wored:row", S = "wored:letter", T = "wored:enter", C = "wored:backspace", W = "wored:core:row", P = "wored:core:reload", U = "wored-row", Y = "wored-controller", X = "wored-keyboard", F = "wored-settings-dropdown", w = {
+const R = "wored:row", S = "wored:letter", T = "wored:enter", C = "wored:backspace", V = "wored:core:row", j = "wored:core:reload", G = "wored-row", N = "wored-controller", y = "wored-keyboard", M = "wored-settings-dropdown", w = {
   orange: "color-orange",
   green: "color-green",
   gray: "color-gray"
-}, v = "wored:word", G = "wored:history", p = "wored:game", $ = "wored-winning-row";
-function B(s, t) {
+}, v = "wored:word", W = "wored:history", p = "wored:game", J = "wored-winning-row";
+function U(s, t) {
   return s.getDate() === t.getDate() && s.getFullYear() === t.getFullYear() && s.getMonth() === t.getMonth();
 }
 function H(s) {
@@ -25,7 +25,7 @@ function K(s) {
   return !t.test(s) && !e.test(s) && s.length === l.WORD_LENGTH;
 }
 var E;
-class V extends HTMLElement {
+class Y extends HTMLElement {
   constructor() {
     super();
     u(this, "input", "");
@@ -85,7 +85,7 @@ class O extends HTMLElement {
     u(this, "rows");
     this.activeRowIndex = 0, this.rows = [];
     for (let e = 0; e < l.MAX_ATTEMPTS; e++) {
-      const n = new V();
+      const n = new Y();
       this.rows.push(n), this.appendChild(n);
     }
   }
@@ -99,7 +99,7 @@ class O extends HTMLElement {
     }
   }
   __rowSubmitHandler(e) {
-    const { input: n } = e.detail, o = new CustomEvent(W, {
+    const { input: n } = e.detail, o = new CustomEvent(V, {
       bubbles: !0,
       detail: { input: n },
       composed: !0
@@ -114,7 +114,7 @@ class O extends HTMLElement {
       const a = e[h], c = H(a);
       o.setInputStatusAtIndex(h, c), c !== w.green && (i = !1);
     }
-    i && o.classList.add($), this.updateListeners();
+    i && o.classList.add(J), this.updateListeners();
   }
 }
 const L = "qwertyuiopasdfghjkl$zxcvbnm#";
@@ -177,7 +177,7 @@ class x extends HTMLElement {
   }
 }
 const q = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>', z = 3, Z = 12, Q = 1, ee = 16;
-function N(s, t, e, n) {
+function P(s, t, e, n) {
   const o = document.createElement("select");
   o.addEventListener("input", n);
   const i = document.createElement("label");
@@ -197,14 +197,14 @@ class te extends HTMLElement {
     u(this, "open", !1);
     u(this, "wrap", document.createElement("div"));
     u(this, "trigger", document.createElement("button"));
-    const e = N(
+    const e = P(
       "Word Length",
       z,
       Z,
       this.__handleWordLengthSelect.bind(this)
     );
     e.select.value = `${l.WORD_LENGTH}`;
-    const n = N(
+    const n = P(
       "Attempts",
       Q,
       ee,
@@ -227,7 +227,7 @@ class te extends HTMLElement {
     this.open = !this.open, this.wrap.style.display = this.open ? "block" : "none", this.trigger.classList.toggle("active");
   }
   sendReloadEvent() {
-    this.dispatchEvent(new CustomEvent(P, {
+    this.dispatchEvent(new CustomEvent(j, {
       composed: !0,
       bubbles: !0
     }));
@@ -250,9 +250,9 @@ class te extends HTMLElement {
   }
 }
 function ne() {
-  customElements.define(U, V), customElements.define(Y, O), customElements.define(X, x), customElements.define(F, te);
+  customElements.get(G) || customElements.define(G, Y), customElements.get(N) || customElements.define(N, O), customElements.get(y) || customElements.define(y, x), customElements.get(M) || customElements.define(M, te);
 }
-function y(s) {
+function $(s) {
   localStorage.setItem(p, JSON.stringify(s));
 }
 function se() {
@@ -260,15 +260,15 @@ function se() {
   if (!s)
     return null;
   const t = JSON.parse(s);
-  return B(/* @__PURE__ */ new Date(), new Date(t.timestamp)) ? t : (localStorage.removeItem(p), null);
+  return U(/* @__PURE__ */ new Date(), new Date(t.timestamp)) ? t : (localStorage.removeItem(p), null);
 }
 function oe(s) {
-  const t = localStorage.getItem(G);
+  const t = localStorage.getItem(W);
   let e;
   t ? (e = JSON.parse(t), e.entries.push(s)) : e = {
     lastWrite: Date.now(),
     entries: [s]
-  }, localStorage.setItem(G, JSON.stringify(e));
+  }, localStorage.setItem(W, JSON.stringify(e));
 }
 const l = {
   WORD_LENGTH: 5,
@@ -283,11 +283,11 @@ const l = {
     to: 0
   }
 };
-async function M() {
+async function B() {
   const s = localStorage.getItem(v);
   if (s) {
     const t = JSON.parse(s), e = /* @__PURE__ */ new Date(), n = new Date(t.timestamp);
-    if (B(e, n) && t.length === l.WORD_LENGTH)
+    if (U(e, n) && t.length === l.WORD_LENGTH)
       return Promise.resolve(t.word);
   }
   return fetch(`https://random-word-api.herokuapp.com/word?length=${l.WORD_LENGTH}`).then((t) => t.json()).then(([t]) => (localStorage.setItem(v, JSON.stringify({
@@ -300,7 +300,7 @@ async function M() {
 }
 async function re(s) {
   ne(), console.clear();
-  const t = se(), e = t ? t.game.word : await M();
+  const t = se(), e = t ? t.game.word : await B();
   console.log(`---------- New Game: "${e}" ----------`), t ? (Object.assign(r, t.game), Object.assign(r.timestamps, t.game.timestamps), Object.assign(l, t.cfg)) : (r.running = !0, r.word = e, r.timestamps.from = Date.now());
   let n = new O(), o = new x();
   const i = document.querySelector(s);
@@ -316,10 +316,10 @@ async function re(s) {
         const A = H(_);
         c.setInputStatusAtIndex(g, A), A !== w.green && (m = !1);
       }
-      m && c.classList.add($), o.highlightLetters(d.letters);
+      m && c.classList.add(J), o.highlightLetters(d.letters);
     }
   }
-  document.addEventListener(W, (a) => {
+  document.addEventListener(V, (a) => {
     const { input: c } = a.detail, d = {
       index: r.rounds.length,
       userGuess: c,
@@ -335,20 +335,20 @@ async function re(s) {
       d.letters.push(f);
     }
     console.log("Round results"), console.table(d.letters), r.rounds.push(d), n.endOfRound(d.letters), o.highlightLetters(d.letters), h();
-  }), document.addEventListener(P, async () => {
-    r.word = await M(), r.rounds = [], r.timestamps.from = Date.now(), r.running = !0, console.log(`---------- New Game: "${r.word}" ----------`), n.replaceChildren(), n.remove(), o.replaceChildren(), o.remove(), requestAnimationFrame(() => {
+  }), document.addEventListener(j, async () => {
+    r.word = await B(), r.rounds = [], r.timestamps.from = Date.now(), r.running = !0, console.log(`---------- New Game: "${r.word}" ----------`), n.replaceChildren(), n.remove(), o.replaceChildren(), o.remove(), requestAnimationFrame(() => {
       n = new O(), o = new x(), i == null || i.append(n, o);
     });
   });
   function h() {
     const a = r.rounds.some((d) => d.letters.every((m) => m.isExactMatch));
     if (l.MAX_ATTEMPTS !== r.rounds.length && !a) {
-      y({ game: r, cfg: l, timestamp: Date.now() });
+      $({ game: r, cfg: l, timestamp: Date.now() });
       return;
     }
     r.running = !1, r.timestamps.to = Date.now(), o.disable(), a && (r.win = !0, console.log(`[${r.word}] Game over! You won!`)), a || console.log(`[${r.word}] Game over! You lost`);
     const c = { game: r, cfg: l, timestamp: Date.now() };
-    y(c), oe(c);
+    $(c), oe(c);
   }
 }
 re("#app");
