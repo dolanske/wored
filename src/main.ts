@@ -10,7 +10,7 @@ import { getGameState, saveGameState, saveHistoryEntry } from './results'
 // Main configuration
 export const cfg = {
   WORD_LENGTH: 5,
-  AVAILABLE_ATTEMPTS: 6,
+  MAX_ATTEMPTS: 6,
 }
 
 // Main game state object
@@ -63,6 +63,9 @@ async function fetchWord(): Promise<string> {
 }
 
 export async function run(mountTo: string) {
+  // Registers UI components
+  register()
+
   console.clear()
 
   // Get cached game state and assign it
@@ -205,7 +208,7 @@ export async function run(mountTo: string) {
     const isGameCompleted = game.rounds.some(round => round.letters.every(letter => letter.isExactMatch))
 
     // Return if game has not completed its final round
-    if (cfg.AVAILABLE_ATTEMPTS !== game.rounds.length && !isGameCompleted) {
+    if (cfg.MAX_ATTEMPTS !== game.rounds.length && !isGameCompleted) {
       // Save the current game state at the end of each round The code is
       // duplicated because we want to explicity change if game is running or
       // not still running === game isn't completed
@@ -237,9 +240,6 @@ export async function run(mountTo: string) {
     saveHistoryEntry(finalGameObject)
   }
 }
-
-// Registers UI components
-register()
 
 // Run the game
 run('#app')

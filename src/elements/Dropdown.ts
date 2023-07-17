@@ -50,7 +50,7 @@ export class ElDropdown extends HTMLElement {
       maxAttemptCount,
       this.__handleAttemptCountSelect.bind(this),
     )
-    attemptSelect.select.value = `${cfg.AVAILABLE_ATTEMPTS}`
+    attemptSelect.select.value = `${cfg.MAX_ATTEMPTS}`
 
     //
     const btnRestartGame = document.createElement('button')
@@ -104,7 +104,7 @@ export class ElDropdown extends HTMLElement {
 
   // Changed the amount of attempts
   __handleAttemptCountSelect(event: Event) {
-    cfg.AVAILABLE_ATTEMPTS = Number((event.target as HTMLSelectElement).value)
+    cfg.MAX_ATTEMPTS = Number((event.target as HTMLSelectElement).value)
     localStorage.removeItem(S_GAME)
     this.toggle()
     this.sendReloadEvent()

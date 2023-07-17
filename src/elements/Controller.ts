@@ -18,7 +18,7 @@ export class ElController extends HTMLElement {
     this.rows = []
 
     // Generate row items
-    for (let i = 0; i < cfg.AVAILABLE_ATTEMPTS; i++) {
+    for (let i = 0; i < cfg.MAX_ATTEMPTS; i++) {
       const el = new ElRow()
       this.rows.push(el)
       this.appendChild(el)
