@@ -16,12 +16,12 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/wored.mjs"
+      "import": "./dist/wored.js"
     }
   },
-  "main": "./dist/wored.mjs",
-  "module": "./dist/wored.mjs",
-  "types": "./dist/wored.d.ts",
+  "main": "./dist/wored.js",
+  "module": "./dist/wored.js",
+  "types": "./dist/main.d.ts",
   "files": [
     "dist"
   ],
