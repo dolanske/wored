@@ -23,7 +23,8 @@
   "module": "./dist/wored.js",
   "types": "./dist/main.d.ts",
   "files": [
-    "dist"
+    "dist/*",
+    "dist/style.css"
   ],
   "scripts": {
     "dev": "vite",
