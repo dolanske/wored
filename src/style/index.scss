@@ -47,22 +47,11 @@
     color: var(--color-link-hover);
   }
 
-  h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-    margin-bottom: 0;
-    margin-top: 0;
-  }
-
-  p {
-    margin-top: 0;
-  }
-
   button {
     border-radius: 8px;
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
-    font-size: 1em;
+    font-size: 14px;
     font-weight: 500;
     font-family: inherit;
     background-color: var(--color-bg-light);
@@ -104,7 +93,7 @@
       width: 48px;
       height: 64px;
       padding: 0;
-      font-size: 1rem;
+      font-size: 14px;
 
       &:nth-child(20),
       &:nth-child(28) {
@@ -130,7 +119,7 @@
       border-radius: 4px;
       outline: none;
       text-align: center;
-      font-size: 1.6rem;
+      font-size: 24px;
       font-weight: 700;
       border: none;
       display: flex;
@@ -172,7 +161,7 @@
 
     .drp-trigger {
       background-color: transparent;
-      font-size: 1.4rem;
+      font-size: 18px;
       padding: 10px 15px;
       width: unset !important;
       height: unset !important;
@@ -208,10 +197,11 @@
     }
 
     label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      font-weight: 700;
+      font-size: 12px;
+      // text-transform: uppercase;
+      font-weight: 400;
       margin-bottom: 3px;
+      text-align: left;
     }
 
     select {
@@ -221,7 +211,7 @@
       height: 32px;
       line-height: 32px;
       padding: 0 16px;
-      font-size: 0.8rem;
+      font-size: 12px;
       background-color: var(--color-bg);
     }
   }

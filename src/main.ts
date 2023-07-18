@@ -243,6 +243,3 @@ export async function run(mountTo: string) {
     saveHistoryEntry(finalGameObject)
   }
 }
-
-// Run the game
-run('#app')
