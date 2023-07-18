@@ -17,12 +17,6 @@ export const EL_CONTROLLER = 'wored-controller'
 export const EL_KEYBOARD = 'wored-keyboard'
 export const EL_DROPDOWN = 'wored-settings-dropdown'
 
-export const CLS_COLORS = {
-  orange: 'color-orange',
-  green: 'color-green',
-  gray: 'color-gray',
-}
-
 // Local storage items
 export const S_WORD = 'wored:word'
 export const S_HISTORY = 'wored:history'
@@ -30,3 +24,10 @@ export const S_GAME = 'wored:game'
 
 // Classes
 export const CLS_WINNING_ROW = 'wored-winning-row'
+export const CLS_GAME_WRAP = 'wored-game-wrapper'
+export const CLS_GAME_SCOPE = 'wored-game-scope'
+export const CLS_COLORS = {
+  orange: 'color-orange',
+  green: 'color-green',
+  gray: 'color-gray',
+}

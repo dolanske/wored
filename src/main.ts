@@ -1,11 +1,12 @@
 import type { Game, Round } from './types'
 import { getColorFromResult, isSameDay } from './util'
-import './style/index.css'
-import { CLS_COLORS, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
+import './style/index.scss'
+import { CLS_COLORS, CLS_GAME_SCOPE, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
 import { ElController } from './elements/Controller'
 import { register } from './dom'
 import { ElKeyboard } from './elements/Keyboard'
 import { getGameState, saveGameState, saveHistoryEntry } from './results'
+import { ElDropdown } from './elements/Dropdown'
 
 // Main configuration
 export const cfg = {
@@ -92,12 +93,14 @@ export async function run(mountTo: string) {
 
   let Controller = new ElController()
   let Keyboard = new ElKeyboard()
+  const Dropdown = new ElDropdown()
   const App = document.querySelector(mountTo)
 
   if (cachedState)
     Controller.activeRowIndex = cachedState.game.rounds.length
 
-  App?.append(Controller, Keyboard)
+  App?.append(Controller, Keyboard, Dropdown)
+  App?.classList.add(CLS_GAME_SCOPE)
 
   // This will write the progress of the cached game so far into the controller
   if (cachedState) {

@@ -39,5 +39,8 @@
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
     "vite-plugin-dts": "^3.3.1"
+  },
+  "dependencies": {
+    "sass": "^1.63.6"
   }
 }
