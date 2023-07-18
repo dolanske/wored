@@ -69,6 +69,17 @@ export class ElController extends HTMLElement {
     // Appends a class to the row
     let winningRow = true
 
+    // TODO
+    // Figure out correct highlighting for included letters (not exactMatches)
+
+    // if (!cachedLetters[letterActual])
+    //   cachedLetters[letterActual] = 1
+    // else
+    //   cachedLetters[letterActual]++
+
+    // const rgx = new RegExp(`/${letterActual}/g`)
+    // const amount = game.word.match(rgx)?.length ?? 0
+
     for (let i = 0; i < row.cells.length; i++) {
       const result = roundResult[i]
       const color = getColorFromResult(result)

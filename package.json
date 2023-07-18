@@ -33,14 +33,14 @@
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "sass": "^1.63.6"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.5",
     "eslint": "^8.43.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
     "vite-plugin-dts": "^3.3.1"
-  },
-  "dependencies": {
-    "sass": "^1.63.6"
   }
 }

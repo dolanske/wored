@@ -1,37 +1,37 @@
-var X = Object.defineProperty;
-var F = (s, t, e) => t in s ? X(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var u = (s, t, e) => (F(s, typeof t != "symbol" ? t + "" : t, e), e), k = (s, t, e) => {
+var K = Object.defineProperty;
+var q = (s, t, e) => t in s ? K(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var u = (s, t, e) => (q(s, typeof t != "symbol" ? t + "" : t, e), e), D = (s, t, e) => {
   if (!t.has(s))
     throw TypeError("Cannot " + e);
 };
-var I = (s, t, e) => (k(s, t, "read from private field"), e ? e.call(s) : t.get(s)), D = (s, t, e) => {
+var I = (s, t, e) => (D(s, t, "read from private field"), e ? e.call(s) : t.get(s)), G = (s, t, e) => {
   if (t.has(s))
     throw TypeError("Cannot add the same private member more than once");
   t instanceof WeakSet ? t.add(s) : t.set(s, e);
-}, b = (s, t, e, n) => (k(s, t, "write to private field"), n ? n.call(s, e) : t.set(s, e), e);
-const R = "wored:row", S = "wored:letter", T = "wored:enter", C = "wored:backspace", V = "wored:core:row", j = "wored:core:reload", G = "wored-row", N = "wored-controller", y = "wored-keyboard", M = "wored-settings-dropdown", w = {
+}, R = (s, t, e, n) => (D(s, t, "write to private field"), n ? n.call(s, e) : t.set(s, e), e);
+const T = "wored:row", C = "wored:letter", O = "wored:enter", x = "wored:backspace", j = "wored:core:row", J = "wored:core:reload", N = "wored-row", y = "wored-controller", M = "wored-keyboard", W = "wored-settings-dropdown", b = "wored:word", P = "wored:history", E = "wored:game", U = "wored-winning-row", z = "wored-game-scope", v = {
   orange: "color-orange",
   green: "color-green",
   gray: "color-gray"
-}, v = "wored:word", W = "wored:history", p = "wored:game", J = "wored-winning-row";
-function U(s, t) {
+};
+function Y(s, t) {
   return s.getDate() === t.getDate() && s.getFullYear() === t.getFullYear() && s.getMonth() === t.getMonth();
 }
-function H(s) {
-  return s.isPresent ? s.isExactMatch ? w.green : w.orange : w.gray;
+function A(s) {
+  return s.isPresent ? s.isExactMatch ? v.green : v.orange : v.gray;
 }
-function K(s) {
+function Z(s) {
   const t = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/, e = /\d/;
   return !t.test(s) && !e.test(s) && s.length === l.WORD_LENGTH;
 }
-var E;
-class Y extends HTMLElement {
+var _;
+class X extends HTMLElement {
   constructor() {
     super();
     u(this, "input", "");
     u(this, "isActive", !1);
     u(this, "cells", []);
-    D(this, E, !1);
+    G(this, _, !1);
     this.classList.add("row");
     for (let e = 0; e < l.WORD_LENGTH; e++) {
       const n = document.createElement("div");
@@ -39,7 +39,7 @@ class Y extends HTMLElement {
     }
   }
   connectedCallback() {
-    document.addEventListener(S, this.__handleLetter.bind(this)), document.addEventListener(C, this.__handleBackspace.bind(this)), document.addEventListener(T, this.__handleEnter.bind(this));
+    document.addEventListener(C, this.__handleLetter.bind(this)), document.addEventListener(x, this.__handleBackspace.bind(this)), document.addEventListener(O, this.__handleEnter.bind(this));
   }
   __handleLetter(e) {
     if (!this.isActive || !document.contains(this))
@@ -57,35 +57,35 @@ class Y extends HTMLElement {
     }
   }
   __handleEnter(e) {
-    if (!(!this.isActive || !document.contains(this)) && (e.preventDefault(), console.log("Submitted Row"), !I(this, E))) {
-      if (b(this, E, !0), !K(this.input) || this.input.length !== l.WORD_LENGTH)
+    if (!(!this.isActive || !document.contains(this)) && (e.preventDefault(), console.log("Submitted Row"), !I(this, _))) {
+      if (R(this, _, !0), !Z(this.input) || this.input.length !== l.WORD_LENGTH)
         console.error(`Invalid input: "${this.input}"`);
       else {
-        const n = new CustomEvent(R, {
+        const n = new CustomEvent(T, {
           bubbles: !1,
           detail: { input: this.input }
         });
         this.dispatchEvent(n);
       }
-      b(this, E, !1);
+      R(this, _, !1);
     }
   }
   disconnectedCallback() {
-    this.replaceChildren(), this.isActive = !1, this.cells = [], document.removeEventListener(S, this.__handleLetter.bind(this)), document.removeEventListener(C, this.__handleBackspace.bind(this)), document.removeEventListener(T, this.__handleEnter.bind(this));
+    this.replaceChildren(), this.isActive = !1, this.cells = [], document.removeEventListener(C, this.__handleLetter.bind(this)), document.removeEventListener(x, this.__handleBackspace.bind(this)), document.removeEventListener(O, this.__handleEnter.bind(this));
   }
   setInputStatusAtIndex(e, n) {
     this.cells[e].classList.add(n);
   }
 }
-E = new WeakMap();
-class O extends HTMLElement {
+_ = new WeakMap();
+class H extends HTMLElement {
   constructor() {
     super();
     u(this, "activeRowIndex");
     u(this, "rows");
     this.activeRowIndex = 0, this.rows = [];
     for (let e = 0; e < l.MAX_ATTEMPTS; e++) {
-      const n = new Y();
+      const n = new X();
       this.rows.push(n), this.appendChild(n);
     }
   }
@@ -95,11 +95,11 @@ class O extends HTMLElement {
   updateListeners() {
     for (let e = 0; e < this.rows.length; e++) {
       const n = this.rows[e];
-      e === this.activeRowIndex ? (n.addEventListener(R, this.__rowSubmitHandler), n.isActive = !0) : (n.isActive = !1, n.removeEventListener(R, this.__rowSubmitHandler));
+      e === this.activeRowIndex ? (n.addEventListener(T, this.__rowSubmitHandler), n.isActive = !0) : (n.isActive = !1, n.removeEventListener(T, this.__rowSubmitHandler));
     }
   }
   __rowSubmitHandler(e) {
-    const { input: n } = e.detail, o = new CustomEvent(V, {
+    const { input: n } = e.detail, o = new CustomEvent(j, {
       bubbles: !0,
       detail: { input: n },
       composed: !0
@@ -109,20 +109,20 @@ class O extends HTMLElement {
   endOfRound(e) {
     const n = this.activeRowIndex, o = this.rows[n];
     this.activeRowIndex++;
-    let i = !0;
-    for (let h = 0; h < o.cells.length; h++) {
-      const a = e[h], c = H(a);
-      o.setInputStatusAtIndex(h, c), c !== w.green && (i = !1);
+    let a = !0;
+    for (let i = 0; i < o.cells.length; i++) {
+      const p = e[i], c = A(p);
+      o.setInputStatusAtIndex(i, c), c !== v.green && (a = !1);
     }
-    i && o.classList.add(J), this.updateListeners();
+    a && o.classList.add(U), this.updateListeners();
   }
 }
-const L = "qwertyuiopasdfghjkl$zxcvbnm#";
-class x extends HTMLElement {
+const S = "qwertyuiopasdfghjkl$zxcvbnm#";
+class k extends HTMLElement {
   constructor() {
     super();
     u(this, "buttons");
-    this.buttons = L.split("").map((e) => {
+    this.buttons = S.split("").map((e) => {
       const n = document.createElement("button");
       return e === "$" ? (n.textContent = "ENTER", n.addEventListener("click", this.__enterHandler.bind(this))) : e === "#" ? (n.textContent = "DELETE", n.addEventListener("click", this.__backspaceHandler.bind(this))) : (n.textContent = e.toUpperCase(), n.addEventListener("click", () => this.__letterHandler(e))), n;
     }), document.addEventListener("keydown", this.__keyPressHandler.bind(this));
@@ -133,8 +133,8 @@ class x extends HTMLElement {
   // Iterates over letters and assigns their colors based on the results
   highlightLetters(e) {
     for (const n of e) {
-      const o = H(n), i = L.indexOf(n.letterUser);
-      this.buttons[i].classList.add(o);
+      const o = A(n), a = S.indexOf(n.letterUser);
+      this.buttons[a].classList.add(o);
     }
   }
   // Will disable any interaction after game has concluded
@@ -145,7 +145,7 @@ class x extends HTMLElement {
   }
   // Send the character into the row element
   __letterHandler(e) {
-    const n = new CustomEvent(S, {
+    const n = new CustomEvent(C, {
       detail: { char: e },
       bubbles: !0,
       composed: !0
@@ -154,7 +154,7 @@ class x extends HTMLElement {
   }
   // Submit the current row
   __enterHandler() {
-    const e = new CustomEvent(T, {
+    const e = new CustomEvent(O, {
       bubbles: !0,
       composed: !0
     });
@@ -162,7 +162,7 @@ class x extends HTMLElement {
   }
   // If current active index has a letter, remove it
   __backspaceHandler() {
-    const e = new CustomEvent(C, {
+    const e = new CustomEvent(x, {
       bubbles: !0,
       composed: !0
     });
@@ -173,102 +173,102 @@ class x extends HTMLElement {
     if (!r.running)
       return;
     const { key: n } = e;
-    L.includes(n) ? this.__letterHandler(n) : n === "Backspace" ? this.__backspaceHandler() : n === "Enter" && this.__enterHandler();
+    S.includes(n) ? this.__letterHandler(n) : n === "Backspace" ? this.__backspaceHandler() : n === "Enter" && this.__enterHandler();
   }
 }
-const q = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>', z = 3, Z = 12, Q = 1, ee = 16;
-function P(s, t, e, n) {
+const Q = '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>', ee = 3, te = 12, ne = 1, se = 16;
+function $(s, t, e, n) {
   const o = document.createElement("select");
   o.addEventListener("input", n);
-  const i = document.createElement("label");
-  i.textContent = s;
-  for (let h = t; h < e; h++) {
-    const a = document.createElement("option");
-    a.value = `${h}`, a.textContent = `${h}`, o.appendChild(a);
+  const a = document.createElement("label");
+  a.textContent = s;
+  for (let i = t; i < e; i++) {
+    const p = document.createElement("option");
+    p.value = `${i}`, p.textContent = `${i}`, o.appendChild(p);
   }
   return {
-    label: i,
+    label: a,
     select: o
   };
 }
-class te extends HTMLElement {
+class F extends HTMLElement {
   constructor() {
     super();
     u(this, "open", !1);
     u(this, "wrap", document.createElement("div"));
     u(this, "trigger", document.createElement("button"));
-    const e = P(
+    const e = $(
       "Word Length",
-      z,
-      Z,
+      ee,
+      te,
       this.__handleWordLengthSelect.bind(this)
     );
     e.select.value = `${l.WORD_LENGTH}`;
-    const n = P(
+    const n = $(
       "Attempts",
-      Q,
-      ee,
+      ne,
+      se,
       this.__handleAttemptCountSelect.bind(this)
     );
     n.select.value = `${l.MAX_ATTEMPTS}`;
     const o = document.createElement("button");
     o.innerText = "Restart", o.addEventListener("click", this.__handleRestartGame.bind(this));
-    const i = document.createElement("button");
-    i.innerText = "New Word", i.addEventListener("click", this.__handleRefreshGame.bind(this)), this.wrap.classList.add("drp-wrap"), this.wrap.append(
+    const a = document.createElement("button");
+    a.innerText = "New Word", a.addEventListener("click", this.__handleRefreshGame.bind(this)), this.wrap.classList.add("drp-wrap"), this.wrap.append(
       n.label,
       n.select,
       e.label,
       e.select,
-      i,
+      a,
       o
-    ), this.trigger.innerHTML = q, this.trigger.classList.add("drp-trigger"), this.trigger.addEventListener("click", this.toggle.bind(this)), this.append(this.trigger, this.wrap);
+    ), this.trigger.innerHTML = Q, this.trigger.classList.add("drp-trigger"), this.trigger.addEventListener("click", this.toggle.bind(this)), this.append(this.trigger, this.wrap);
   }
   toggle() {
     this.open = !this.open, this.wrap.style.display = this.open ? "block" : "none", this.trigger.classList.toggle("active");
   }
   sendReloadEvent() {
-    this.dispatchEvent(new CustomEvent(j, {
+    this.dispatchEvent(new CustomEvent(J, {
       composed: !0,
       bubbles: !0
     }));
   }
   // Changed the word length
   __handleWordLengthSelect(e) {
-    l.WORD_LENGTH = Number(e.target.value), localStorage.removeItem(p), localStorage.removeItem(v), this.toggle(), this.sendReloadEvent();
+    l.WORD_LENGTH = Number(e.target.value), localStorage.removeItem(E), localStorage.removeItem(b), this.toggle(), this.sendReloadEvent();
   }
   // Changed the amount of attempts
   __handleAttemptCountSelect(e) {
-    l.MAX_ATTEMPTS = Number(e.target.value), localStorage.removeItem(p), this.toggle(), this.sendReloadEvent();
+    l.MAX_ATTEMPTS = Number(e.target.value), localStorage.removeItem(E), this.toggle(), this.sendReloadEvent();
   }
   // Restart the game and get an new word
   __handleRefreshGame() {
-    localStorage.removeItem(p), localStorage.removeItem(v), this.toggle(), this.sendReloadEvent();
+    localStorage.removeItem(E), localStorage.removeItem(b), this.toggle(), this.sendReloadEvent();
   }
   // Restart the game (but keep the word)
   __handleRestartGame() {
-    localStorage.removeItem(p), this.toggle(), this.sendReloadEvent();
+    localStorage.removeItem(E), this.toggle(), this.sendReloadEvent();
   }
 }
-function ne() {
-  customElements.get(G) || customElements.define(G, Y), customElements.get(N) || customElements.define(N, O), customElements.get(y) || customElements.define(y, x), customElements.get(M) || customElements.define(M, te);
+function oe() {
+  customElements.get(N) || customElements.define(N, X), customElements.get(y) || customElements.define(y, H), customElements.get(M) || customElements.define(M, k), customElements.get(W) || customElements.define(W, F);
 }
-function $(s) {
-  localStorage.setItem(p, JSON.stringify(s));
+function B(s) {
+  localStorage.setItem(E, JSON.stringify(s));
 }
-function se() {
-  const s = localStorage.getItem(p);
+function re() {
+  const s = localStorage.getItem(E);
   if (!s)
     return null;
   const t = JSON.parse(s);
-  return U(/* @__PURE__ */ new Date(), new Date(t.timestamp)) ? t : (localStorage.removeItem(p), null);
+  return Y(/* @__PURE__ */ new Date(), new Date(t.timestamp)) ? t : (localStorage.removeItem(E), null);
 }
-function oe(s) {
-  const t = localStorage.getItem(W);
+function ie(s) {
+  const t = localStorage.getItem(P);
   let e;
   t ? (e = JSON.parse(t), e.entries.push(s)) : e = {
     lastWrite: Date.now(),
     entries: [s]
-  }, localStorage.setItem(W, JSON.stringify(e));
+  }, localStorage.setItem(P, JSON.stringify(e));
 }
 const l = {
   WORD_LENGTH: 5,
@@ -283,14 +283,14 @@ const l = {
     to: 0
   }
 };
-async function B() {
-  const s = localStorage.getItem(v);
+async function V() {
+  const s = localStorage.getItem(b);
   if (s) {
     const t = JSON.parse(s), e = /* @__PURE__ */ new Date(), n = new Date(t.timestamp);
-    if (U(e, n) && t.length === l.WORD_LENGTH)
+    if (Y(e, n) && t.length === l.WORD_LENGTH)
       return Promise.resolve(t.word);
   }
-  return fetch(`https://random-word-api.herokuapp.com/word?length=${l.WORD_LENGTH}`).then((t) => t.json()).then(([t]) => (localStorage.setItem(v, JSON.stringify({
+  return fetch(`https://random-word-api.herokuapp.com/word?length=${l.WORD_LENGTH}`).then((t) => t.json()).then(([t]) => (localStorage.setItem(b, JSON.stringify({
     word: t,
     timestamp: Date.now(),
     length: l.WORD_LENGTH
@@ -298,62 +298,62 @@ async function B() {
     console.error(t);
   });
 }
-async function re(s) {
-  ne(), console.clear();
-  const t = se(), e = t ? t.game.word : await B();
+async function le(s) {
+  oe(), console.clear();
+  const t = re(), e = t ? t.game.word : await V();
   console.log(`---------- New Game: "${e}" ----------`), t ? (Object.assign(r, t.game), Object.assign(r.timestamps, t.game.timestamps), Object.assign(l, t.cfg)) : (r.running = !0, r.word = e, r.timestamps.from = Date.now());
-  let n = new O(), o = new x();
-  const i = document.querySelector(s);
-  if (t && (n.activeRowIndex = t.game.rounds.length), i == null || i.append(n, o), t) {
+  let n = new H(), o = new k();
+  const a = new F(), i = document.querySelector(s);
+  if (t && (n.activeRowIndex = t.game.rounds.length), i == null || i.append(n, o, a), i == null || i.classList.add(z), t) {
     t.game.running || o.disable();
-    for (let a = 0; a < t.game.rounds.length; a++) {
-      const c = n.rows[a], d = t.game.rounds[a];
+    for (let c = 0; c < t.game.rounds.length; c++) {
+      const h = n.rows[c], d = t.game.rounds[c];
       let m = !0;
-      c.isActive = !1, c.input = d.userGuess;
+      h.isActive = !1, h.input = d.userGuess;
       for (let g = 0; g < d.letters.length; g++) {
-        const _ = d.letters[g], f = c.cells[g];
-        f.innerText = _.letterUser;
-        const A = H(_);
-        c.setInputStatusAtIndex(g, A), A !== w.green && (m = !1);
+        const w = d.letters[g], L = h.cells[g];
+        L.innerText = w.letterUser;
+        const f = A(w);
+        h.setInputStatusAtIndex(g, f), f !== v.green && (m = !1);
       }
-      m && c.classList.add(J), o.highlightLetters(d.letters);
+      m && h.classList.add(U), o.highlightLetters(d.letters);
     }
   }
-  document.addEventListener(V, (a) => {
-    const { input: c } = a.detail, d = {
+  document.addEventListener(j, (c) => {
+    const { input: h } = c.detail, d = {
       index: r.rounds.length,
-      userGuess: c,
+      userGuess: h,
       letters: []
     };
     for (let m = 0; m < l.WORD_LENGTH; m++) {
-      const g = c.charAt(m), _ = r.word.charAt(m), f = {
-        letterActual: _,
+      const g = h.charAt(m), w = r.word.charAt(m), L = r.word.includes(g), f = {
+        letterActual: w,
         letterUser: g,
-        isPresent: r.word.includes(g),
-        isExactMatch: g === _
+        isPresent: L,
+        isExactMatch: g === w
       };
       d.letters.push(f);
     }
-    console.log("Round results"), console.table(d.letters), r.rounds.push(d), n.endOfRound(d.letters), o.highlightLetters(d.letters), h();
-  }), document.addEventListener(j, async () => {
-    r.word = await B(), r.rounds = [], r.timestamps.from = Date.now(), r.running = !0, console.log(`---------- New Game: "${r.word}" ----------`), n.replaceChildren(), n.remove(), o.replaceChildren(), o.remove(), requestAnimationFrame(() => {
-      n = new O(), o = new x(), i == null || i.append(n, o);
+    console.log("Round results"), console.table(d.letters), r.rounds.push(d), n.endOfRound(d.letters), o.highlightLetters(d.letters), p();
+  }), document.addEventListener(J, async () => {
+    r.word = await V(), r.rounds = [], r.timestamps.from = Date.now(), r.running = !0, console.log(`---------- New Game: "${r.word}" ----------`), n.replaceChildren(), n.remove(), o.replaceChildren(), o.remove(), requestAnimationFrame(() => {
+      n = new H(), o = new k(), i == null || i.append(n, o);
     });
   });
-  function h() {
-    const a = r.rounds.some((d) => d.letters.every((m) => m.isExactMatch));
-    if (l.MAX_ATTEMPTS !== r.rounds.length && !a) {
-      $({ game: r, cfg: l, timestamp: Date.now() });
+  function p() {
+    const c = r.rounds.some((d) => d.letters.every((m) => m.isExactMatch));
+    if (l.MAX_ATTEMPTS !== r.rounds.length && !c) {
+      B({ game: r, cfg: l, timestamp: Date.now() });
       return;
     }
-    r.running = !1, r.timestamps.to = Date.now(), o.disable(), a && (r.win = !0, console.log(`[${r.word}] Game over! You won!`)), a || console.log(`[${r.word}] Game over! You lost`);
-    const c = { game: r, cfg: l, timestamp: Date.now() };
-    $(c), oe(c);
+    r.running = !1, r.timestamps.to = Date.now(), o.disable(), c && (r.win = !0, console.log(`[${r.word}] Game over! You won!`)), c || console.log(`[${r.word}] Game over! You lost`);
+    const h = { game: r, cfg: l, timestamp: Date.now() };
+    B(h), ie(h);
   }
 }
-re("#app");
+le("#app");
 export {
   l as cfg,
   r as game,
-  re as run
+  le as run
 };

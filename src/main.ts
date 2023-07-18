@@ -139,7 +139,6 @@ export async function run(mountTo: string) {
   // Is called whenever a valid user input has been submitted
   document.addEventListener(EVT_ROW_SUBMIT_TO_CORE, (event) => {
     const { input } = (event as CustomEvent<{ input: string }>).detail
-
     const round: Round = {
       index: game.rounds.length,
       userGuess: input,
@@ -149,13 +148,15 @@ export async function run(mountTo: string) {
     // Iterate over each letter in the user input We are checking for if letter
     // is present in the word (anywhere) or if it's the exact match (index of
     // the letter corresponds with the word)
+
     for (let i = 0; i < cfg.WORD_LENGTH; i++) {
       const letterUser = input.charAt(i)
       const letterActual = game.word.charAt(i)
+      const isPresent = game.word.includes(letterUser)
       const letterResult = {
         letterActual,
         letterUser,
-        isPresent: game.word.includes(letterUser),
+        isPresent,
         isExactMatch: letterUser === letterActual,
       }
 
@@ -223,11 +224,6 @@ export async function run(mountTo: string) {
     game.timestamps.to = Date.now()
     Keyboard.disable()
 
-    // Save history entry only when game has ended
-    // REVIEW: we could have added
-    // saveGameState() to history function too but this is cleaner as these
-    // functions shouldn't produce side effects
-
     // SECTION: Game over: WIN
     if (isGameCompleted) {
       game.win = true
@@ -238,6 +234,10 @@ export async function run(mountTo: string) {
     if (!isGameCompleted)
       console.log(`[${game.word}] Game over! You lost`)
 
+    // Save history entry only when game has ended
+    // REVIEW: we could have added
+    // saveGameState() to history function too but this is cleaner as these
+    // functions shouldn't produce side effects
     const finalGameObject = { game, cfg, timestamp: Date.now() }
     saveGameState(finalGameObject)
     saveHistoryEntry(finalGameObject)
