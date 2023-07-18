@@ -298,7 +298,7 @@ async function V() {
     console.error(t);
   });
 }
-async function le(s) {
+async function ae(s) {
   oe(), console.clear();
   const t = re(), e = t ? t.game.word : await V();
   console.log(`---------- New Game: "${e}" ----------`), t ? (Object.assign(r, t.game), Object.assign(r.timestamps, t.game.timestamps), Object.assign(l, t.cfg)) : (r.running = !0, r.word = e, r.timestamps.from = Date.now());
@@ -351,9 +351,8 @@ async function le(s) {
     B(h), ie(h);
   }
 }
-le("#app");
 export {
   l as cfg,
   r as game,
-  le as run
+  ae as run
 };
