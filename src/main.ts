@@ -1,7 +1,7 @@
 import type { Game, Round } from './types'
 import { countLetter, getColorFromResult, isSameDay } from './util'
 import './style/index.scss'
-import { CLS_COLORS, CLS_GAME_SCOPE, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
+import { CLS_COLORS, CLS_GAME_SCOPE, CLS_LOSING_ROW, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
 import { ElController } from './elements/Controller'
 import { register } from './dom'
 import { ElKeyboard } from './elements/Keyboard'
@@ -131,6 +131,8 @@ export async function run(mountTo: string) {
 
       if (winningRow)
         row.classList.add(CLS_WINNING_ROW)
+      else if ((i + 1) === cfg.MAX_ATTEMPTS)
+        row.classList.add(CLS_LOSING_ROW)
 
       Keyboard.highlightLetters(round.letters)
     }

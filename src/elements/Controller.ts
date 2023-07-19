@@ -3,7 +3,7 @@
 // 2. Listening to row events and forwarding them to the game's core
 
 import { cfg } from '../main'
-import { CLS_COLORS, CLS_WINNING_ROW, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../definitions'
+import { CLS_COLORS, CLS_LOSING_ROW, CLS_WINNING_ROW, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../definitions'
 import type { Letter } from '../types'
 import { getColorFromResult } from '../util'
 import { ElRow } from './Row'
@@ -80,6 +80,8 @@ export class ElController extends HTMLElement {
 
     if (winningRow)
       row.classList.add(CLS_WINNING_ROW)
+    else if ((currentIndex + 5) === cfg.MAX_ATTEMPTS)
+      row.classList.add(CLS_LOSING_ROW)
 
     this.updateListeners()
   }

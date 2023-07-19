@@ -36,6 +36,7 @@
   --color-orange: #d47a39;
   --color-green: #4fa752;
   --color-gray: #2f2f2f;
+  --color-red: #a63f3f;
 
   a {
     font-weight: 500;
@@ -138,8 +139,7 @@
       gap: 12px;
       position: relative;
 
-      &.wored-winning-row::after {
-        content: url(/checkmark.svg);
+      &:after {
         display: block;
         width: 24px;
         height: 24px;
@@ -148,6 +148,14 @@
         right: -48px;
         top: 50%;
         transform: translateY(-50%);
+      }
+
+      &.wored-winning-row::after {
+        content: url(/checkmark.svg);
+      }
+
+      &.wored-losing-row::after {
+        content: url(/cancel.svg);
       }
     }
   }

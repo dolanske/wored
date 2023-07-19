@@ -24,6 +24,7 @@ export const S_GAME = 'wored:game'
 
 // Classes
 export const CLS_WINNING_ROW = 'wored-winning-row'
+export const CLS_LOSING_ROW = 'wored-losing-row'
 export const CLS_GAME_WRAP = 'wored-game-wrapper'
 export const CLS_GAME_SCOPE = 'wored-game-scope'
 export const CLS_COLORS = {
