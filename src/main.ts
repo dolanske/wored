@@ -1,5 +1,5 @@
 import type { Game, Round } from './types'
-import { getColorFromResult, isSameDay } from './util'
+import { countLetter, getColorFromResult, isSameDay } from './util'
 import './style/index.scss'
 import { CLS_COLORS, CLS_GAME_SCOPE, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
 import { ElController } from './elements/Controller'
@@ -148,19 +148,44 @@ export async function run(mountTo: string) {
     // Iterate over each letter in the user input We are checking for if letter
     // is present in the word (anywhere) or if it's the exact match (index of
     // the letter corresponds with the word)
-
     for (let i = 0; i < cfg.WORD_LENGTH; i++) {
       const letterUser = input.charAt(i)
       const letterActual = game.word.charAt(i)
-      const isPresent = game.word.includes(letterUser)
       const letterResult = {
         letterActual,
         letterUser,
-        isPresent,
+        isPresent: game.word.includes(letterUser),
         isExactMatch: letterUser === letterActual,
       }
 
       round.letters.push(letterResult)
+    }
+
+    const letterIndex: Record<string, number> = {}
+    // Iterate over results again and tweak letter highlighting. Orange
+    // letters should only display, if the amount of correct user inputs
+    // is lower or equal to the amount of right inputs. But not in the
+    // right positions
+    for (const letter of round.letters) {
+      if (letter.isPresent) {
+        // Save how many times a letter occured
+        if (letterIndex[letter.letterUser])
+          letterIndex[letter.letterUser]++
+        else
+          letterIndex[letter.letterUser] = 1
+
+        // Abort if it's the exact match. THat letter will always be green
+        if (letter.isExactMatch)
+          continue
+
+        const correctLetters = countLetter(game.word, letter.letterUser)
+        const indexLetter = letterIndex[letter.letterUser]
+
+        if (indexLetter <= correctLetters)
+          continue
+
+        letter.isPresent = false
+      }
     }
 
     // SECTION: LOGGING
@@ -243,3 +268,6 @@ export async function run(mountTo: string) {
     saveHistoryEntry(finalGameObject)
   }
 }
+
+// REMOVE
+run('#app')

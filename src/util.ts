@@ -16,9 +16,16 @@ export function replaceAt(str: string, index: number, chr: any) {
 }
 
 export function getColorFromResult(round: Letter) {
-  return (round.isPresent
-    ? round.isExactMatch
-      ? CLS_COLORS.green
-      : CLS_COLORS.orange
-    : CLS_COLORS.gray)
+  if (round.isExactMatch)
+    return CLS_COLORS.green
+
+  else if (round.isPresent)
+    return CLS_COLORS.orange
+
+  else
+    return CLS_COLORS.gray
+}
+
+export function countLetter(word: string, letter: string) {
+  return (word.match(new RegExp(letter, 'g')) || []).length
 }

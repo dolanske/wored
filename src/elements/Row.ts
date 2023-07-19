@@ -4,7 +4,7 @@
 
 import { cfg } from '../main'
 import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER, EVT_ROW_SUBMIT } from '../definitions'
-import { isValidInput } from '../validate'
+import { isValidEnglishWord, isValidInput } from '../validate'
 
 export class ElRow extends HTMLElement {
   input = ''
@@ -61,7 +61,7 @@ export class ElRow extends HTMLElement {
     }
   }
 
-  __handleEnter(event: Event) {
+  async __handleEnter(event: Event) {
     if (!this.isActive || !document.contains(this))
       return
 
@@ -79,7 +79,12 @@ export class ElRow extends HTMLElement {
     //    - contains special character
     //    - is not exactly length === cfg.ATTEMPTS
     //    - word does not exist at all
-    if (!isValidInput(this.input) || this.input.length !== cfg.WORD_LENGTH) {
+
+    if (
+      !isValidInput(this.input)
+      || this.input.length !== cfg.WORD_LENGTH
+      || !(await isValidEnglishWord(this.input))
+    ) {
       // this.input = ''
       console.error(`Invalid input: "${this.input}"`)
     }
