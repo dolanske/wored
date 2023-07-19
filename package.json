@@ -1,7 +1,7 @@
 {
   "name": "@dolanske/wored",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.4",
   "private": false,
   "description": "I swear this is just a wordle replica practise project.",
   "author": "dolanske",

@@ -80,7 +80,7 @@ export class ElController extends HTMLElement {
 
     if (winningRow)
       row.classList.add(CLS_WINNING_ROW)
-    else if ((currentIndex + 5) === cfg.MAX_ATTEMPTS)
+    else if ((currentIndex + 1) === cfg.MAX_ATTEMPTS)
       row.classList.add(CLS_LOSING_ROW)
 
     this.updateListeners()

@@ -12,6 +12,7 @@ export declare const S_WORD = "wored:word";
 export declare const S_HISTORY = "wored:history";
 export declare const S_GAME = "wored:game";
 export declare const CLS_WINNING_ROW = "wored-winning-row";
+export declare const CLS_LOSING_ROW = "wored-losing-row";
 export declare const CLS_GAME_WRAP = "wored-game-wrapper";
 export declare const CLS_GAME_SCOPE = "wored-game-scope";
 export declare const CLS_COLORS: {

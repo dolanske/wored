@@ -270,6 +270,3 @@ export async function run(mountTo: string) {
     saveHistoryEntry(finalGameObject)
   }
 }
-
-// REMOVE
-run('#app')
