@@ -119,7 +119,6 @@ export async function run(mountTo: string) {
       for (let i = 0; i < round.letters.length; i++) {
         const letter = round.letters[i]
         const cell = row.cells[i]
-
         cell.innerText = letter.letterUser
 
         const color = getColorFromResult(letter)
@@ -215,11 +214,9 @@ export async function run(mountTo: string) {
 
     // SECTION: LOGGING
     console.log(`---------- New Game: "${game.word}" ----------`)
-    // 2. Reset all UI without reloading the page. We can re-initialize
-    //    all the elements by creating a new instance of them and using
-    //    the `replaceWith()` method on themselves
-    // const NewController =
-    // const NewKeyboard =
+    // 2. Reset all UI without reloading the page. We can re-initialize all the
+    //    elements by first letting them remove themselves, their child nodes
+    //    and then replacing them with a new instance
 
     Controller.replaceChildren()
     Controller.remove()
@@ -230,7 +227,6 @@ export async function run(mountTo: string) {
     requestAnimationFrame(() => {
       Controller = new ElController()
       Keyboard = new ElKeyboard()
-
       App?.append(Controller, Keyboard)
     })
   })
