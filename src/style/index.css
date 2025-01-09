@@ -1,3 +1,18 @@
+:host {
+  --color-bg: #0a0a0a;
+  --color-bg-light: #1a1a1a;
+  --color-bg-lighter: #202020;
+  --color-border: #353535;
+  --color-text: #ffffffde;
+  --color-link: #646cff;
+  --color-link-hover: #8b90ec;
+
+  --color-orange: #d47a39;
+  --color-green: #4fa752;
+  --color-gray: #2f2f2f;
+  --color-red: #a63f3f;
+}
+
 .wored-game-scope {
   margin: 1rem;
   padding: 2rem;
@@ -25,18 +40,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --color-bg: #0a0a0a;
-  --color-bg-light: #1a1a1a;
-  --color-bg-lighter: #202020;
-  --color-border: #353535;
-  --color-text: #ffffffde;
-  --color-link: #646cff;
-  --color-link-hover: #8b90ec;
 
-  --color-orange: #d47a39;
-  --color-green: #4fa752;
-  --color-gray: #2f2f2f;
-  --color-red: #a63f3f;
 
   a {
     font-weight: 500;
@@ -82,7 +86,7 @@
     background-color: var(--color-gray) !important;
   }
 
-  // SECTION: Keyboard
+  /* SECTION: Keyboard */
   wored-keyboard {
     display: flex;
     justify-content: center;
@@ -108,7 +112,7 @@
     }
   }
 
-  // SECTION: Controller
+  /* SECTION: Controller */
   wored-controller {
     display: flex;
     flex-direction: column;
@@ -160,7 +164,7 @@
     }
   }
 
-  // SECTION: Controller
+  /* SECTION: Controller */
   wored-settings-dropdown {
     position: absolute;
     right: 10px;
@@ -206,7 +210,6 @@
 
     label {
       font-size: 12px;
-      // text-transform: uppercase;
       font-weight: 400;
       margin-bottom: 3px;
       text-align: left;

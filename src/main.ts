@@ -1,6 +1,6 @@
 import type { Game, Round } from './types'
 import { countLetter, getColorFromResult, isSameDay } from './util'
-import './style/index.scss'
+import './style/index.css'
 import { CLS_COLORS, CLS_GAME_SCOPE, CLS_LOSING_ROW, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
 import { ElController } from './elements/Controller'
 import { register } from './dom'
@@ -266,3 +266,5 @@ export async function run(mountTo: string) {
     saveHistoryEntry(finalGameObject)
   }
 }
+
+run("#app")
