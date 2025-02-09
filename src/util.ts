@@ -1,5 +1,5 @@
-import { CLS_COLORS } from './definitions'
 import type { Letter } from './types'
+import { CLS_COLORS } from './definitions'
 
 // Checks wether two dates match down to a day, ignores hours, minutes etc
 export function isSameDay(d1: Date, d2: Date): boolean {

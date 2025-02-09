@@ -8,7 +8,7 @@ export async function isValidEnglishWord(word: string): Promise<boolean> {
 }
 
 export function isValidInput(input: string) {
-  const rgxSpecialChar = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
+  const rgxSpecialChar = /[ `!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/
   const rgxNumber = /\d/
 
   return !rgxSpecialChar.test(input)
