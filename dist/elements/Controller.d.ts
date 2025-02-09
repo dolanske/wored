@@ -1,4 +1,4 @@
-import type { Letter } from '../types';
+import { Letter } from '../types';
 import { ElRow } from './Row';
 export declare class ElController extends HTMLElement {
     activeRowIndex: number;

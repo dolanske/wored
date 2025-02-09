@@ -1,6 +1,6 @@
 import type { cfg } from './main'
-import { S_GAME, S_HISTORY } from './definitions'
 import type { Game } from './types'
+import { S_GAME, S_HISTORY } from './definitions'
 import { isSameDay } from './util'
 
 export interface SavedGameState {

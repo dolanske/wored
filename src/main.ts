@@ -1,12 +1,12 @@
 import type { Game, Round } from './types'
-import { countLetter, getColorFromResult, isSameDay } from './util'
-import './style/index.scss'
 import { CLS_COLORS, CLS_GAME_SCOPE, CLS_LOSING_ROW, CLS_WINNING_ROW, EVT_GAME_RELOAD_TO_CORE, EVT_ROW_SUBMIT_TO_CORE, S_WORD } from './definitions'
-import { ElController } from './elements/Controller'
 import { register } from './dom'
+import { ElController } from './elements/Controller'
+import { ElDropdown } from './elements/Dropdown'
 import { ElKeyboard } from './elements/Keyboard'
 import { getGameState, saveGameState, saveHistoryEntry } from './results'
-import { ElDropdown } from './elements/Dropdown'
+import { countLetter, getColorFromResult, isSameDay } from './util'
+import './style/index.css'
 
 // Main configuration
 export const cfg = {
@@ -119,7 +119,7 @@ export async function run(mountTo: string) {
       for (let i = 0; i < round.letters.length; i++) {
         const letter = round.letters[i]
         const cell = row.cells[i]
-        cell.innerText = letter.letterUser
+        cell.textContent = letter.letterUser
 
         const color = getColorFromResult(letter)
         row.setInputStatusAtIndex(i, color)
@@ -146,47 +146,34 @@ export async function run(mountTo: string) {
       letters: [],
     }
 
+    
     // Iterate over each letter in the user input We are checking for if letter
-    // is present in the word (anywhere) or if it's the exact match (index of
+    // is present in the word or if it's the exact match (index of
     // the letter corresponds with the word)
+    
+    const letterIndex: Record<string, number> = {}
+    // This loop also makes sure only the correct amount of letters are
+    // highlighted and that it doesn't hint there are more letters in the word
+    // than there are
     for (let i = 0; i < cfg.WORD_LENGTH; i++) {
       const letterUser = input.charAt(i)
       const letterActual = game.word.charAt(i)
+
+      if (letterIndex[letterUser] === undefined)
+        // Store the total count of said letter in the word
+        letterIndex[letterUser] = countLetter(game.word, letterUser) - 1
+      else
+        letterIndex[letterUser]--
+
       const letterResult = {
         letterActual,
         letterUser,
-        isPresent: game.word.includes(letterUser),
+        // Only set if it's present, if the correct amount hasn't been met yet
+        isPresent: letterIndex[letterUser] >= 0,
         isExactMatch: letterUser === letterActual,
       }
 
       round.letters.push(letterResult)
-    }
-
-    const letterIndex: Record<string, number> = {}
-    // Iterate over results again and tweak letter highlighting. Orange
-    // letters should only display, if the amount of correct user inputs
-    // is lower or equal to the amount of right inputs. But not in the
-    // right positions
-    for (const letter of round.letters) {
-      if (letter.isPresent) {
-        // Save how many times a letter occured
-        if (letterIndex[letter.letterUser])
-          letterIndex[letter.letterUser]++
-        else
-          letterIndex[letter.letterUser] = 1
-
-        // Abort if it's the exact match. THat letter will always be green
-        if (letter.isExactMatch)
-          continue
-
-        const correctLetters = countLetter(game.word, letter.letterUser)
-        const indexLetter = letterIndex[letter.letterUser]
-
-        if (indexLetter <= correctLetters)
-          continue
-
-        letter.isPresent = false
-      }
     }
 
     // SECTION: LOGGING
@@ -266,3 +253,5 @@ export async function run(mountTo: string) {
     saveHistoryEntry(finalGameObject)
   }
 }
+
+run('#app')

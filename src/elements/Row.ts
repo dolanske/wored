@@ -2,8 +2,8 @@
 // collect and validate user inputs and send them to the parent
 // form controller
 
-import { cfg } from '../main'
 import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER, EVT_ROW_SUBMIT } from '../definitions'
+import { cfg } from '../main'
 import { isValidEnglishWord, isValidInput } from '../validate'
 
 export class ElRow extends HTMLElement {

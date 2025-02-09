@@ -1,8 +1,8 @@
+import { EL_CONTROLLER, EL_DROPDOWN, EL_KEYBOARD, EL_ROW } from './definitions'
 import { ElController } from './elements/Controller'
+import { ElDropdown } from './elements/Dropdown'
 import { ElKeyboard } from './elements/Keyboard'
 import { ElRow } from './elements/Row'
-import { EL_CONTROLLER, EL_DROPDOWN, EL_KEYBOARD, EL_ROW } from './definitions'
-import { ElDropdown } from './elements/Dropdown'
 
 export function register() {
   if (!customElements.get(EL_ROW))

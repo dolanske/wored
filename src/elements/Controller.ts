@@ -2,9 +2,9 @@
 // 1. Generating rows
 // 2. Listening to row events and forwarding them to the game's core
 
-import { cfg } from '../main'
-import { CLS_COLORS, CLS_LOSING_ROW, CLS_WINNING_ROW, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../definitions'
 import type { Letter } from '../types'
+import { CLS_COLORS, CLS_LOSING_ROW, CLS_WINNING_ROW, EVT_ROW_SUBMIT, EVT_ROW_SUBMIT_TO_CORE } from '../definitions'
+import { cfg } from '../main'
 import { getColorFromResult } from '../util'
 import { ElRow } from './Row'
 

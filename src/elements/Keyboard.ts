@@ -1,6 +1,6 @@
+import type { Letter } from '../types'
 import { EVT_BACKSPACE, EVT_ENTER, EVT_LETTER } from '../definitions'
 import { game } from '../main'
-import type { Letter } from '../types'
 import { getColorFromResult } from '../util'
 
 // # is 'Backspace' key

@@ -1,4 +1,4 @@
-import type { Game } from './types';
+import { Game } from './types';
 export declare const cfg: {
     WORD_LENGTH: number;
     MAX_ATTEMPTS: number;
