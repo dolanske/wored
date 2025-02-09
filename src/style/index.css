@@ -1,4 +1,4 @@
-:root {
+.wored-game-scope {
   --color-bg: #0a0a0a;
   --color-bg-light: #1a1a1a;
   --color-bg-lighter: #202020;
@@ -11,9 +11,7 @@
   --color-green: #4fa752;
   --color-gray: #2f2f2f;
   --color-red: #a63f3f;
-}
 
-.wored-game-scope {
   margin: 1rem;
   padding: 2rem;
   text-align: center;
