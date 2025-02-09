@@ -148,7 +148,6 @@ export async function run(mountTo: string) {
 
     const letterIndex: Record<string, number> = {}
 
-
     // Iterate over each letter in the user input We are checking for if letter
     // is present in the word (anywhere) or if it's the exact match (index of
     // the letter corresponds with the word)
@@ -161,7 +160,7 @@ export async function run(mountTo: string) {
         letterIndex[letterUser] = countLetter(game.word, letterUser) - 1
       else
         letterIndex[letterUser]--
-      
+
       const letterResult = {
         letterActual,
         letterUser,

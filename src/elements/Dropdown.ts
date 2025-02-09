@@ -54,11 +54,11 @@ export class ElDropdown extends HTMLElement {
 
     //
     const btnRestartGame = document.createElement('button')
-    btnRestartGame.innerText = 'Restart'
+    btnRestartGame.textContent = 'Restart'
     btnRestartGame.addEventListener('click', this.__handleRestartGame.bind(this))
 
     const btnRefreshGame = document.createElement('button')
-    btnRefreshGame.innerText = 'New Word'
+    btnRefreshGame.textContent = 'New Word'
     btnRefreshGame.addEventListener('click', this.__handleRefreshGame.bind(this))
 
     this.wrap.classList.add('drp-wrap')

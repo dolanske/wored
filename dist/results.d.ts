@@ -1,5 +1,5 @@
-import type { cfg } from './main';
-import type { Game } from './types';
+import { cfg } from './main';
+import { Game } from './types';
 export interface SavedGameState {
     timestamp: number;
     game: Game;

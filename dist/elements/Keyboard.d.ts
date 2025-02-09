@@ -1,4 +1,4 @@
-import type { Letter } from '../types';
+import { Letter } from '../types';
 export declare class ElKeyboard extends HTMLElement {
     buttons: HTMLButtonElement[];
     constructor();
