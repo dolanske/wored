@@ -19,7 +19,7 @@
       "import": "./dist/wored.js"
     },
     "./style": {
-      "import": "./dist/style.css"
+      "import": "./dist/wored.css"
     }
   },
   "main": "./dist/wored.js",
